@@ -1,0 +1,35 @@
+# ignore bin and obj folders
+bin/
+obj/
+
+# ignore build artifacts
+*.exe
+*.dll
+*.pdb
+*.user
+*.aps
+*.pch
+*.vspscc
+*_i.c
+*_p.c
+*.ncb
+*.suo
+*.tlb
+*.tlh
+*.bak
+*.*~
+*~.*
+
+# ignore NuGet packages
+packages/
+*.nupkg
+*.snupkg
+*.props
+*.targets
+
+# ignore user-specific files
+*.sln.docstates
+*.suo
+*.user
+*.vssscc
+*.vspscc
