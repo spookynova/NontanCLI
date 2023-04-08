@@ -9,7 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
+using System.Threading;
 
 namespace NontanCLI.Feature.Detail
 {
@@ -34,18 +34,71 @@ namespace NontanCLI.Feature.Detail
 
             Table table = new Table();
 
-            Console.WriteLine("Id          : " + id);
-            Console.WriteLine("Title       : " + response.title.romaji.ToString());
-            Console.WriteLine("Description : " + Regex.Replace(response.description.ToString(), "<.*?>", string.Empty));
-            Console.WriteLine("Type        : " + response.type.ToString());
-            Console.WriteLine("Status      : " + response.status.ToString());
+            AnsiConsole.MarkupLine("[bold green]Title[/]");
+            if (response != null)
+            {
 
+                if (response.title.romaji != null)
+                {
+                    Console.WriteLine("Romaji         : " + response.title.romaji.ToString());
+                } else
+                {
+                    Console.WriteLine("Romaji         : To Be Announce");
+                }
+
+                if (response.title.english != null)
+                {
+                    Console.WriteLine("English        : " + response.title.english.ToString());
+                }
+                else
+                {
+                    Console.WriteLine("English        : To Be Announce");
+                }
+
+            } else
+            {
+                AnsiConsole.MarkupLine("[red]Fetching data failed, please try again later[/]");
+                // wait for 2 seconds
+                Thread.Sleep(2000);
+                // clear the screen
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+            }
+
+            Console.WriteLine("\n");
+
+
+            AnsiConsole.MarkupLine("[bold green]Description[/]");
+            Console.WriteLine(Regex.Replace(response.description.ToString(), "<.*?>", string.Empty) + "\n");
+
+            AnsiConsole.MarkupLine("[bold green]Type[/]");
+            Console.WriteLine(response.type.ToString() + "\n");
+
+            AnsiConsole.MarkupLine("[bold green]Status[/]");
+            Console.WriteLine(response.status.ToString() + "\n");
+
+            AnsiConsole.MarkupLine("[bold green]Total Episodes[/]");
+            Console.WriteLine(response.totalEpisodes.ToString() + " Episodes \n");
+
+            AnsiConsole.MarkupLine("[bold green]Duration[/]");
+            Console.WriteLine(response.duration.ToString() + " Minutes \n");
+
+            AnsiConsole.MarkupLine("[bold green]Genres[/]");
+            Console.WriteLine("{0}", string.Join(", ", response.genres) + "\n");
+
+            AnsiConsole.MarkupLine("[bold green]Release Date[/]");
+            Console.WriteLine(response.releaseDate.ToString() + "\n");
+
+            AnsiConsole.MarkupLine("[bold green]Studio[/]");
+            Console.WriteLine(response.studios[0].ToString() + "\n");
 
 
             table.Title = new TableTitle($"\n\n[green]Episode List[/]");
             table.AddColumn("[green]No[/]");
             table.AddColumn("[green]Title[/]");
             table.AddColumn("[green]Description[/]");
+            table.AddColumn("[green]Episode ID[/]");
 
             // Add some rows
             foreach (var item in response.episodes)
@@ -53,6 +106,7 @@ namespace NontanCLI.Feature.Detail
                 string no = "";
                 string title = "";
                 string description = "";
+                string eps_id = "";
                 if (item.id != null)
                 {
                     no = item.number.ToString();
@@ -64,16 +118,16 @@ namespace NontanCLI.Feature.Detail
                 if (item.description != null)
                 {
                     description = Regex.Replace(item.description.ToString(), "<.*?>", string.Empty);
-                    var output = description.Substring(0, Math.Min(description.Length, 100));
-                    description = output;
-                    if (description.Length > 100)
-                    {
-                        description += "...";
-                    }
+                
+                }
+
+                if (item.id != null)
+                {
+                    eps_id = item.id.ToString();
                 }
 
 
-                table.AddRow("Episode " + no, title, description);
+                table.AddRow("Episode " + no, title, description  + "\n", eps_id);
             }
 
             AnsiConsole.Render(table);

@@ -201,6 +201,7 @@ namespace NontanCLI.Feature.Search
                     string status = "";
                     string type = "";
                     string rating = "";
+                    list_result.Add(item);
                     if (item.id != null)
                     {
                         id = item.id.ToString();
@@ -291,6 +292,8 @@ namespace NontanCLI.Feature.Search
                 AnsiConsole.MarkupLine("[red]No result found[/]");
                 // wait for 2 seconds
                 Thread.Sleep(2000);
+                // clear the screen
+                AnsiConsole.Clear();
                 Program.MenuHandlerInvoke();
                 return;
             }

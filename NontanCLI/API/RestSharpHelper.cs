@@ -43,7 +43,16 @@ namespace NontanCLI.API
                     ctx.Status($"Response status code: {response.StatusCode}");
 
                     // Simulate some work
-                    AnsiConsole.MarkupLine("Successfully Fetching Data...");
+                    if (response.StatusCode == HttpStatusCode.OK)
+                    {
+                        ctx.Status("Data Retrieved Successfully!");
+//                        Thread.Sleep(1000);
+                    }
+                    else
+                    {
+                        ctx.Status("Data Retrieval Failed!");
+//                        Thread.Sleep(1000);
+                    } 
                 });
 
             // check the response status code

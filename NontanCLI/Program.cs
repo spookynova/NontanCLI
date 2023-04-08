@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.IO;
 using NontanCLI.API;
 using NontanCLI.Feature.Search;
 using NontanCLI.Feature;
@@ -10,13 +11,20 @@ using Spectre.Console;
 using NontanCLI.Feature.Watch;
 using NontanCLI.Feature.Popular;
 using NontanCLI.Feature.Trending;
+using NontanCLI.Feature.DownloadManager;
+using System.Windows.Forms;
+using System.Net.Http;
+using System.Security.Policy;
+using System.Diagnostics;
+using System.Threading;
 
 namespace NontanCLI
 {
     public class Program
     {
 
-        public static string version = "1.0.0";
+        public static string version = "1.0.0 beta.3.8.23";
+        public static string buildVersion = "1";
 
         [Obsolete]
         static void Main(string[] args)
@@ -24,6 +32,11 @@ namespace NontanCLI
 
             // args -s search
             // args -w watch
+
+
+
+            //Process.Start(@"C:\Users\mozar\Documents\Github\NontanCLI\NontanCLI\bin\Debug\vlc\vlc.exe", "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8");
+
 
             if (args.Length > 0)
             {
@@ -42,7 +55,7 @@ namespace NontanCLI
 
                 if (args[0] == "-v")
                 {
-                    Console.WriteLine("Version : " + version);
+                    AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})\n\n");
                 }
 
                 if (args[0] == "-w")
@@ -52,16 +65,16 @@ namespace NontanCLI
             }
             else
             {
+
                 MenuHandlerInvoke();
             }
-
         }
 
         [Obsolete]
         public static void MenuHandlerInvoke()
         {
 
-            var _prompt = Menu.MenuHandler();
+            var _prompt = MenuHandler.MenuHandlerInvoke();
 
             switch (_prompt)
             {
@@ -76,9 +89,11 @@ namespace NontanCLI
                     Console.ReadLine();
                     break;
                 case "Search":
+                    Console.Clear();
+
                     var _search_by = AnsiConsole.Prompt(
                     new SelectionPrompt<string>()
-                        .Title("[green]Select Anime Available[/]?")
+                        .Title("[green]Select available menu[/]?")
                         .PageSize(10)
                         .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
                         .AddChoices("Search By Genres", "Search By Query","Back"));
@@ -93,10 +108,10 @@ namespace NontanCLI
 
                             var _selected_genres = AnsiConsole.Prompt(
                                 new MultiSelectionPrompt<string>()
-                                    .Title("What are your [green]favorite fruits[/]?")
+                                    .Title("Select [green]Available Genres[/]?")
                                     .NotRequired() // Not required to have a favorite fruit
                                     .PageSize(10)
-                                    .MoreChoicesText("[grey](Move up and down to reveal more fruits)[/]")
+                                    .MoreChoicesText("[grey](Move up and down to reveal more Genres)[/]")
                                     .InstructionsText(
                                         "[grey](Press [blue]<space>[/] to toggle a genres, " +
                                         "[green]<enter>[/] to accept genres)[/]")
@@ -133,11 +148,7 @@ namespace NontanCLI
 
                     Console.ReadLine();
                     break;
-                case "Bookmark":
-                    Console.Clear();
-                    Console.WriteLine("Bookmark");
-                    Console.ReadLine();
-                    break;
+                
                 case "Exit":
                     exit();
                     Console.Clear();

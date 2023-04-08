@@ -52,7 +52,13 @@
   <PropertyGroup>
     <ApplicationIcon>DtGV7FaW0AA7vw9.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AltoHttp, Version=1.0.7945.3063, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\AltoHttp.1.5.2\lib\net45\AltoHttp.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -116,6 +122,7 @@
   <ItemGroup>
     <Compile Include="API\RestSharpHelper.cs" />
     <Compile Include="Feature\Detail\DetailAnime.cs" />
+    <Compile Include="Feature\DownloadManager\DownloadManager.cs" />
     <Compile Include="Feature\Popular\PopularAnime.cs" />
     <Compile Include="Feature\Search\SearchAnime.cs" />
     <Compile Include="Feature\Trending\TrendingAnime.cs" />
@@ -143,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

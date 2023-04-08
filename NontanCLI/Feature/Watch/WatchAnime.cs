@@ -2,12 +2,11 @@
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Newtonsoft.Json;
 using NontanCLI.Models;
 using RestSharp;
+using System.Diagnostics;
+using System.Threading;
 
 namespace NontanCLI.Feature.Watch
 {
@@ -51,14 +50,32 @@ namespace NontanCLI.Feature.Watch
 
             if (_prompt == "Back")
             {
-                Menu.MenuHandler();
+                MenuHandler.MenuHandlerInvoke();
             } else
             {
                 foreach (var item in response.sources)
                     {
                     if (item.quality.ToString() == _prompt)
                     {
-                        Table table = new Table();
+
+                        string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
+                        Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", item.url.ToString());
+
+                        // check if vlc is playing video
+
+                        Thread.Sleep(5000);
+                        while (true)
+                        {
+                            if (Process.GetProcessesByName("vlc").Length == 0)
+                            {
+                                Console.Clear();
+                                MenuHandler.MenuHandlerInvoke();
+                                break;
+                            }
+                        }
+
+
+/*                        Table table = new Table();
                         table.Title = new TableTitle($"\n[green]Input Key[/]");
                         table.AddColumn("[green]Key[/]");
                         table.AddColumn("[green]Description[/]");
@@ -74,7 +91,7 @@ namespace NontanCLI.Feature.Watch
                         table.AddRow("Down Arrow", "Volume Down");
 
                         AnsiConsole.Render(table);
-                        WatchDirect3D.MediaPlayerInvoke(item.url.ToString(), anime_id);
+                        WatchDirect3D.MediaPlayerInvoke(item.url.ToString(), anime_id);*/
                     }
                 }
 
@@ -116,7 +133,7 @@ namespace NontanCLI.Feature.Watch
 
             if (_prompt == "Back")
             {
-                Menu.MenuHandler();
+                MenuHandler.MenuHandlerInvoke();
             }
             else
             {
@@ -143,7 +160,6 @@ namespace NontanCLI.Feature.Watch
                         WatchDirect3D.MediaPlayerInvoke(item.url.ToString());
                     }
                 }
-
             }
         }
     }
