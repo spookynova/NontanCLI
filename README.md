@@ -30,6 +30,26 @@ Simple Console App for streaming Anime
 - etc (idk how to explain more)
 
 
+## Installation
+
+- Download Latest Version of NontanCLI from Release Page
+- Extract Zip File
+- Run 'install.bat' to run Installer
+- Wait until instalation complete.
+- Open CMD and,
+- Type NontanCLI for run the app
+##
+
+If you can't run with NontanCLI on Command Prompt, check to environment variable.
+
+- Type env from Search panel 
+- Go to Environment Variables
+- Select Path and press 2x
+- If there is no path named C:\Program Files\NontanCLI then add it by pressing the add button and paste C:\Program Files\NontanCLI
+- And try again
+
+
+
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
