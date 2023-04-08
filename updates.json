@@ -5,7 +5,7 @@
       "version": "1.0.0 beta.3.8.23",
       "date": "2023-04-08",
       "build_version" : "2",
-      
+      "download_url" : "",
       "changes": [
         "Added Installer.",
         "Improved user experiences.",
@@ -16,6 +16,8 @@
       "version": "1.0.0 beta.3.8.23",
       "date": "2023-04-07",
       "build_version" : "1",
+      "build_version" : "2",
+      "download_url" : "",
       "changes": [
         "Initial release of the app."
       ]
