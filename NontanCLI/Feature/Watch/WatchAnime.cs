@@ -69,7 +69,7 @@ namespace NontanCLI.Feature.Watch
                             if (Process.GetProcessesByName("vlc").Length == 0)
                             {
                                 Console.Clear();
-                                MenuHandler.MenuHandlerInvoke();
+                                Program.MenuHandlerInvoke();
                                 break;
                             }
                         }

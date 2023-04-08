@@ -126,6 +126,7 @@
     <Compile Include="Feature\Popular\PopularAnime.cs" />
     <Compile Include="Feature\Search\SearchAnime.cs" />
     <Compile Include="Feature\Trending\TrendingAnime.cs" />
+    <Compile Include="Feature\UpdateManager\UpdateManager.cs" />
     <Compile Include="Feature\WatchDirect3D.cs" />
     <Compile Include="Feature\Menu.cs" />
     <Compile Include="Feature\Watch\WatchAnime.cs" />
@@ -134,6 +135,7 @@
     <Compile Include="Models\PopularModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\TrendingModel.cs" />
+    <Compile Include="Models\UpdatesModel.cs" />
     <Compile Include="Models\WatchModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

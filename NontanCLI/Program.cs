@@ -11,6 +11,7 @@ using Spectre.Console;
 using NontanCLI.Feature.Watch;
 using NontanCLI.Feature.Popular;
 using NontanCLI.Feature.Trending;
+using NontanCLI.Feature.UpdateManager;
 using NontanCLI.Feature.DownloadManager;
 using System.Windows.Forms;
 using System.Net.Http;
@@ -23,8 +24,8 @@ namespace NontanCLI
     public class Program
     {
 
-        public static string version = "1.0.0 beta.3.8.23";
-        public static string buildVersion = "1";
+        public static string version = "1.0.1 beta.3.8.23";
+        public static string buildVersion = "2";
 
         [Obsolete]
         static void Main(string[] args)
@@ -37,6 +38,11 @@ namespace NontanCLI
 
             //Process.Start(@"C:\Users\mozar\Documents\Github\NontanCLI\NontanCLI\bin\Debug\vlc\vlc.exe", "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8");
 
+            // check update
+
+            UpdateManager.UpdateManagerInvoke();
+
+            
 
             if (args.Length > 0)
             {
