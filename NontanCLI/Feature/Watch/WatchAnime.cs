@@ -157,7 +157,7 @@ namespace NontanCLI.Feature.Watch
                         table.AddRow("Down Arrow", "Volume Down");
 
                         AnsiConsole.Render(table);
-                        WatchDirect3D.MediaPlayerInvoke(item.url.ToString());
+                        //WatchDirect3D.MediaPlayerInvoke(item.url.ToString());
                     }
                 }
             }

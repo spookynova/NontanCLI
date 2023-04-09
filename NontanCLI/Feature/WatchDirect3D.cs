@@ -1,5 +1,4 @@
-﻿using LibVLCSharp.Shared;
-using NontanCLI.Feature.Detail;
+﻿using NontanCLI.Feature.Detail;
 using Spectre.Console;
 using System;
 using System.Collections.Generic;
@@ -7,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using FFmpeg;
+
 namespace NontanCLI.Feature
 {
     internal class WatchDirect3D
@@ -14,7 +15,13 @@ namespace NontanCLI.Feature
         [Obsolete]
         public static void MediaPlayerInvoke(string url, string id)
         {
-            Core.Initialize();
+
+
+            
+
+
+
+            /*Core.Initialize();
             
             using (var _libvlc = new LibVLC())
             {
@@ -175,6 +182,7 @@ namespace NontanCLI.Feature
                     }
                 }
             }
+        }*/
         }
     }
 }
