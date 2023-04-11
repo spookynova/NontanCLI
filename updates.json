@@ -5,7 +5,7 @@
       "date": "2023-04-12",
       "build_version": "3",
       "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.zip",
-      "download_url": "",
+      "download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.1.0.3-beta.12.4.23/nontancli-1.0.3-beta.12.4.23-setup.exe",
       "changes": [
         "Fixed downloader",
         "Separate vlc and app, so user will download vlc first.",
