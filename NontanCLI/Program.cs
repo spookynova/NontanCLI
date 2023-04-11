@@ -22,6 +22,7 @@ using System.Net;
 using RestSharp;
 using Newtonsoft.Json;
 using NontanCLI.Models;
+using Ionic.Zip;
 
 namespace NontanCLI
 {
@@ -40,8 +41,7 @@ namespace NontanCLI
 
 
 
-            // check if folder is exist
-
+            
             if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"vlc")+ "/vlc.exe"))
             {
                 if (!AnsiConsole.Confirm("vlc is missing, you must have vlc to use this tool, download VLC ?"))
@@ -61,7 +61,34 @@ namespace NontanCLI
                         if (response != null)
                         {
                             new DownloadManager().Download(response.whats_new[0].vlc_download_url);
+                            using (ZipFile zip = ZipFile.Read(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url)))
+                            {
+                                foreach (ZipEntry z in zip)
+                                {
+                                    z.Extract(Directory.GetCurrentDirectory(), ExtractExistingFileAction.OverwriteSilently);
+                                }
+                            }
 
+                            // check if unzip is success
+                            Thread.Sleep(3000);
+
+                            if (File.Exists(Directory.GetCurrentDirectory() + "/vlc/vlc.exe"))
+                            {
+                                AnsiConsole.MarkupLine("[green]Downloaded and extracted successfully[/]");
+
+                                // Delete File 
+
+                                File.Delete(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url));
+
+                                Thread.Sleep(3000);
+                                Console.Clear();
+                            }
+                            else
+                            {
+                                AnsiConsole.MarkupLine("[red]Downloaded successfully but failed to extract.[/]");
+                                Thread.Sleep(5000);
+                                Environment.Exit(0);
+                            }
                         }
 
                     }
