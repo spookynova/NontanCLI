@@ -14,7 +14,7 @@
       "version": "1.0.1 beta.8.4.23",
       "date": "2023-04-08",
       "build_version": "2",
-      "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.rar",
+      "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.zip",
       "download_url": "",
       "changes": [
         "Added Installer.",
@@ -26,7 +26,7 @@
       "version": "1.0.0 beta.8.4.23",
       "date": "2023-04-07",
       "build_version": "1",
-      "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.rar",
+      "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.zip",
       "download_url": "",
       "changes": [
         "Initial release of the app."
