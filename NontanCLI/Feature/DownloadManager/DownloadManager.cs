@@ -9,46 +9,57 @@ using System.IO;
 using Spectre.Console;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
-using AltoHttp;
-using System.Windows.Forms;
+using System.ComponentModel;
+using System.Net;
+using System.Threading;
 
 namespace NontanCLI.Feature.DownloadManager
 {
-    internal class DownloadManager
+    class DownloadManager
     {
-
-        HttpDownloader httpDownloader;
-
-
-        public async Task DownloadManagerInvoke(string url, string filePath)
+        public void Download(string remoteUri)
         {
-            httpDownloader = new HttpDownloader(url, filePath);
-            httpDownloader.DownloadCompleted += HttpDownloader_DownloadCompleted;
-            httpDownloader.ProgressChanged += HttpDownloader_ProgressChanged;
-            httpDownloader.Start();
-        }
-
-        private void HttpDownloader_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            AnsiConsole.Progress()
-                .AutoClear(false)
-                .Columns(new ProgressColumn[]
+            string FilePath = Directory.GetCurrentDirectory() + "/tepdownload/" + Path.GetFileName(remoteUri); // path where download file to be saved, with filename, here I have taken file name from supplied remote url
+            using (WebClient client = new WebClient())
+            {
+                try
                 {
-                    new TaskDescriptionColumn(),
-                    new ProgressBarColumn(),
-                    new PercentageColumn(),
-                    new RemainingTimeColumn()
-                })
-                .Start(ctx =>
-                {
-                    var task = ctx.AddTask("Downloading...");
-                    task.Increment((double)e.Progress);
-                });
-        }
+                    if (!Directory.Exists("tepdownload"))
+                    {
+                        Directory.CreateDirectory("tepdownload");
+                    }
+                    Uri uri = new Uri(remoteUri);
+                    //password username of your file server eg. ftp username and password
+                    client.Credentials = new NetworkCredential("username", "password");
+                    //delegate method, which will be called after file download has been complete.
+                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(Extract);
+                    //delegate method for progress notification handler.
+                    client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgessChanged);
+                    // uri is the remote url where filed needs to be downloaded, and FilePath is the location where file to be saved
+                    client.DownloadFileAsync(uri, FilePath);
 
-        private void HttpDownloader_DownloadCompleted(object sender, EventArgs e)
+                    while (client.IsBusy)
+                    {
+                        Thread.Sleep(1000);
+                    }
+                }
+                catch (Exception)
+                {
+                    throw;
+                }
+            }
+        }
+        public void Extract(object sender, AsyncCompletedEventArgs e)
         {
-            Console.WriteLine("Download Complete");
+            Console.WriteLine("File has been downloaded.");
+        }
+        public void ProgessChanged(object sender, DownloadProgressChangedEventArgs e)
+        {
+            int totalSize = (int)e.TotalBytesToReceive;
+            int downloadedSize = (int)e.BytesReceived;
+            int percentage = (int)(downloadedSize * 100.0 / totalSize);
+            int charsToFill = (int)(percentage / 2.0); // each character represents 2% progress
+            Console.Write($"\rDownloading... [{new string('#', charsToFill)}{new string(' ', 50 - charsToFill)}] {percentage}%");
         }
     }
 }

@@ -10,8 +10,6 @@ namespace NontanCLI.Models
     // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class UpdatesRoot
     {
-        [JsonProperty("version")]
-        public string version { get; set; }
 
         [JsonProperty("whats_new")]
         public List<UpdatesWhatsNew> whats_new { get; set; }
@@ -30,6 +28,11 @@ namespace NontanCLI.Models
 
         [JsonProperty("download_url")]
         public string download_url { get; set; }
+
+
+        [JsonProperty("vlc_download_url")]
+        public string vlc_download_url { get; set; }
+
 
         [JsonProperty("changes")]
         public List<string> changes { get; set; }

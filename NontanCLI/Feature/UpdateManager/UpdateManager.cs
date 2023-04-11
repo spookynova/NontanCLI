@@ -30,6 +30,9 @@ namespace NontanCLI.Feature.UpdateManager
                 {
                     if (response.whats_new != null)
                     {
+
+                        AnsiConsole.MarkupLine($"[bold white]New Version      : [/] [bold green]{response.whats_new[0].version}[/]" + $" ({response.whats_new[0].build_version})");
+
                         if (response.whats_new[0].build_version != Program.buildVersion)
                         {
                             AnsiConsole.MarkupLine($"[bold yellow]New Update Available[/]");

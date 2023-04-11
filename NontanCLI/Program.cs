@@ -18,6 +18,10 @@ using System.Net.Http;
 using System.Security.Policy;
 using System.Diagnostics;
 using System.Threading;
+using System.Net;
+using RestSharp;
+using Newtonsoft.Json;
+using NontanCLI.Models;
 
 namespace NontanCLI
 {
@@ -27,18 +31,48 @@ namespace NontanCLI
         public static string version = "1.0.1 beta.3.8.23";
         public static string buildVersion = "2";
 
+        public static UpdatesRoot response;
+
         [Obsolete]
         static void Main(string[] args)
         {
 
-            // args -s search
-            // args -w watch
 
 
 
-            //Process.Start(@"C:\Users\mozar\Documents\Github\NontanCLI\NontanCLI\bin\Debug\vlc\vlc.exe", "http://sample.vodobox.net/skate_phantom_flex_4k/skate_phantom_flex_4k.m3u8");
+            // check if folder is exist
 
-            // check update
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"vlc")+ "/vlc.exe"))
+            {
+                if (!AnsiConsole.Confirm("vlc is missing, you must have vlc to use this tool, download VLC ?"))
+                {
+                    Environment.Exit(0);
+                } else
+                {
+                    try
+                    {
+                        var client = new RestClient("https://raw.githubusercontent.com/");
+                        var request = new RestRequest("evnx32/NontanCLI/main/updates.json", Method.Get);
+
+                        RestResponse req = client.Execute(request);
+
+                        response = JsonConvert.DeserializeObject<UpdatesRoot>(req.Content);
+
+                        if (response != null)
+                        {
+                            new DownloadManager().Download(response.whats_new[0].vlc_download_url);
+
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+                
+            }
+                
 
             UpdateManager.UpdateManagerInvoke();
 
