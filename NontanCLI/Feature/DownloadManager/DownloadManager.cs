@@ -19,18 +19,16 @@ namespace NontanCLI.Feature.DownloadManager
     {
         public void Download(string remoteUri)
         {
-            string FilePath = Directory.GetCurrentDirectory() + "/tepdownload/" + Path.GetFileName(remoteUri); // path where download file to be saved, with filename, here I have taken file name from supplied remote url
+            string FilePath = Directory.GetCurrentDirectory() + "/" + Path.GetFileName(remoteUri); // path where download file to be saved, with filename, here I have taken file name from supplied remote url
             using (WebClient client = new WebClient())
             {
                 try
                 {
-                    if (!Directory.Exists("tepdownload"))
-                    {
-                        Directory.CreateDirectory("tepdownload");
-                    }
                     Uri uri = new Uri(remoteUri);
                     //password username of your file server eg. ftp username and password
-                    client.Credentials = new NetworkCredential("username", "password");
+                    
+                    //client.Credentials = new NetworkCredential("username", "password");
+                    
                     //delegate method, which will be called after file download has been complete.
                     client.DownloadFileCompleted += new AsyncCompletedEventHandler(Extract);
                     //delegate method for progress notification handler.
