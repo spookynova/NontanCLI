@@ -53,7 +53,4 @@ If you can't run with NontanCLI on Command Prompt, check to environment variable
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
-
-
-
 [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_large)
