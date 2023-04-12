@@ -10,10 +10,7 @@ Simple Console App for streaming Anime
 
 ## Badges
 
-[![MIT License](https://img.shields.io/bower/l/Mi?style=for-the-badge)](https://choosealicense.com/licenses/mit/) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_shield)
-
-
-[![Repo Size](https://img.shields.io/github/repo-size/evnx32/NontanCLI?style=for-the-badge)](https://img.shields.io/github/repo-size/evnx32/NontanCLI?style=for-the-badge)
+[![MIT License](https://img.shields.io/bower/l/Mi?style=for-the-badge)](https://choosealicense.com/licenses/mit/) [![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_shield) [![Repo Size](https://img.shields.io/github/repo-size/evnx32/NontanCLI?style=for-the-badge)](https://img.shields.io/github/repo-size/evnx32/NontanCLI?style=for-the-badge)
 
 
 ## Screenshots
