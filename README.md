@@ -11,6 +11,8 @@
          src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=shield"
          alt="FOSSA Status" /></a>
 <a href="https://app.codacy.com/gh/evnx32/NontanCLI/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/23e02b33cf364d7190678d4958267375" alt="Codacy Badge"></a>
+         <a href="https://img.shields.io/github/v/release/evnx32/NontanCLI"><img
+         src="https://img.shields.io/github/v/release/evnx32/NontanCLI" alt="Release" /></a>
          </p>
 
 
@@ -52,6 +54,25 @@
 </ul>
 <p>Now the NontanCLI directory should be added to your system's PATH environment variable. You should be able to run NontanCLI from the command line without any issues.
 </p>
+<h2 id="usage">Usage</h2>
+<p>Help Menu</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">NontanCLI -h</span>
+</code></pre>
+<p>Search With Query</p>
+<pre><code class="lang-bash">NontanCLI <span class="hljs-_">-s</span> {Query}
+</code></pre>
+<p>Watch using Episode ID</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">NontanCLI</span> -w {<span class="hljs-attribute">Episode</span> ID}
+</code></pre>
+<p>Trending Discovery</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">NontanCLI -t</span>
+</code></pre>
+<p>Popular Discovery</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">NontanCLI -p</span>
+</code></pre>
+<p>Check Version</p>
+<pre><code class="lang-bash"><span class="hljs-attribute">NontanCLI -v</span>
+</code></pre>
 
 <h1 id="rd-party-software-for-nontancli">3rd-Party Software for <a href="">NontanCLI</a></h1>
 <p>The following 3rd-party software packages may be used by or
