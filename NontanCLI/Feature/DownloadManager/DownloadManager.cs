@@ -25,9 +25,6 @@ namespace NontanCLI.Feature.DownloadManager
                 try
                 {
                     Uri uri = new Uri(remoteUri);
-                    //password username of your file server eg. ftp username and password
-                    
-                    //client.Credentials = new NetworkCredential("username", "password");
                     
                     //delegate method, which will be called after file download has been complete.
                     client.DownloadFileCompleted += new AsyncCompletedEventHandler(Extract);

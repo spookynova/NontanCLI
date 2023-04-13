@@ -94,6 +94,4 @@ namespace NontanCLI.Models
         [JsonProperty("thumbnail")]
         public string thumbnail { get; set; }
     }
-
-
 }

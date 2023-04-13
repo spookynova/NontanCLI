@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 
 namespace NontanCLI.Models
 {
-    // Root myDeserializedClass = JsonConvert.DeserializeObject<Root>(myJsonResponse);
     public class PopularResultModel
     {
         [JsonProperty("id")]

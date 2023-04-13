@@ -13,18 +13,17 @@ using System.Threading;
 
 namespace NontanCLI.Feature.Detail
 {
-    internal class DetailAnime
+    public class DetailAnime
     {
-        public static RestResponse req;
-        public static InfoRoot response;
+        public RestResponse req;
+        public InfoRoot response;
 
         [Obsolete]
-        public static void GetDetailParams(string id)
+        public void GetDetailParams(string id)
         {
 
             try
-            {
-
+            { 
                 req = RestSharpHelper.GetResponse($"/meta/anilist/info/{id}");
                 response = JsonConvert.DeserializeObject<InfoRoot>(req.Content);
             } catch (Exception ex)
@@ -132,6 +131,16 @@ namespace NontanCLI.Feature.Detail
 
             AnsiConsole.Render(table);
 
+            if (response.episodes.Count == 0)
+            {
+                AnsiConsole.MarkupLine("[red]No episode available[/]");
+
+                Thread.Sleep(2000);
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+            }
+
             var eps = AnsiConsole.Prompt(
                 new TextPrompt<int>("What [green]Episode (int)[/] do you want to watch : ")
                     .PromptStyle("green")
@@ -159,7 +168,7 @@ namespace NontanCLI.Feature.Detail
                 }
             }
             
-            WatchAnime.WatchAnimeInvoke(episode_id,id);
+            WatchAnime.WatchAnimeInvoke(episode_id);
         }
     }
 }

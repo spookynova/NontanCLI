@@ -10,7 +10,7 @@ using Spectre.Console;
 
 namespace NontanCLI.API
 {
-    public class RestSharpHelper 
+    public static class RestSharpHelper 
     {
         const string BaseUrl = "https://api.consumet.org/";
 
@@ -25,7 +25,6 @@ namespace NontanCLI.API
                 .Start("Fetching Server...", ctx =>
                 {
                     // Simulate some work
-                    //AnsiConsole.MarkupLine("Retrieving Data From Server...");
                     Thread.Sleep(1000);
 
                     // Update the status and spinner
@@ -46,12 +45,10 @@ namespace NontanCLI.API
                     if (response.StatusCode == HttpStatusCode.OK)
                     {
                         ctx.Status("Data Retrieved Successfully!");
-//                        Thread.Sleep(1000);
                     }
                     else
                     {
                         ctx.Status("Data Retrieval Failed!");
-//                        Thread.Sleep(1000);
                     } 
                 });
 
