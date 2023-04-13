@@ -7,10 +7,10 @@ using Spectre.Console;
 
 namespace NontanCLI.Feature
 {
-    internal class MenuHandler
+    public class MenuHandler
     {
         [Obsolete]
-        public static string MenuHandlerInvoke()
+        public string MenuHandlerInvoke()
         {
 
             // figlet 
@@ -21,8 +21,13 @@ namespace NontanCLI.Feature
                     .Color(Color.Yellow));
 
             AnsiConsole.MarkupLine("[bold yellow]Welcome to NontanCLI[/]");
+
             AnsiConsole.MarkupLine("[bold white]A Simple Console App for streaming Anime[/]");
+
             AnsiConsole.MarkupLine("[bold white]Made with Love by evnx32[/]");
+            // Project Link
+            AnsiConsole.MarkupLine("[bold white]Project Link : https://github.com/evnx32/NontanCLI [/]");
+            
             // version
 
             AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})\n\n");

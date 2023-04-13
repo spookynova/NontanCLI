@@ -6,21 +6,21 @@ using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using RestSharp;
 
 
 namespace NontanCLI.Feature.Search
 {
-    internal class SearchAnime
+    public class SearchAnime
     {
 
-        public static RestResponse req;
-        public static SearchRoot response;
-        public static AdvanceRoot AdvanceResponse;
+        public RestResponse req;
+        public SearchRoot response;
+        public AdvanceRoot AdvanceResponse;
         [Obsolete]
-        public static void SearchAnimeInvoke(string query)
+        public void SearchAnimeInvoke(string query)
         {
             Table table = new Table();
 
@@ -58,42 +58,27 @@ namespace NontanCLI.Feature.Search
                 {
                     id = item.id.ToString();
                 }
+                if (item.title.romaji != null)
+                {
 
-                if (item.title.english != null)
-                {
-                    title = item.title.english.ToString();
-                    list_name.Add(title);
-                }
-                else if (item.title.romaji != null)
-                {
-                    title = item.title.romaji.ToString();
-                    list_name.Add(title);
+                    title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
+                    list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
 
                 }
-                else if (item.title.native != null)
+                else if (item.title.english != null)
                 {
-                    title = item.title.native.ToString();
-                    list_name.Add(title);
+                    title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
+                    list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
 
                 }
-                else
-                {
-                    title = "TBA ( To Be Announce )";
-                    list_name.Add(title);
-
-                }
-
-
                 if (item.status != null)
                 {
                     status = item.status.ToString();
                 }
-
                 if (item.type != null)
                 {
                     type = item.type.ToString();
                 }
-
                 if (item.rating != null)
                 {
                     rating = item.rating.ToString();
@@ -133,25 +118,25 @@ namespace NontanCLI.Feature.Search
             {
                 foreach (var i in list_result)
                 {
-                    if (i.title.english != null)
-                    {
-                        if (_prompt == i.title.english)
-                        {
-                            DetailAnime.GetDetailParams(i.id);
-                        }
-                    }
-                    else if (i.title.romaji != null)
+                    if (i.title.romaji != null)
                     {
                         if (_prompt == i.title.romaji)
                         {
-                            DetailAnime.GetDetailParams(i.id);
+                            new DetailAnime().GetDetailParams(i.id);
+                        }
+                    }
+                    else if (i.title.english != null)
+                    {
+                        if (_prompt == i.title.english)
+                        {
+                            new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                     else
                     {
                         if (_prompt == i.title.english)
                         {
-                            DetailAnime.GetDetailParams(i.id);
+                            new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                 }
@@ -161,7 +146,7 @@ namespace NontanCLI.Feature.Search
 
 
         [Obsolete]
-        public static void AdvanceSearchByGenresInvoke(List<string> genres)
+        public void AdvanceSearchByGenresInvoke(List<string> genres)
         {
             Table table = new Table();
 
@@ -190,7 +175,6 @@ namespace NontanCLI.Feature.Search
                 table.AddColumn("[green]Status[/]");
                 table.AddColumn("[green]Type[/]");
                 table.AddColumn("[green]Rating[/]");
-                List<string> list_name_advance = new List<string>();
                 List<AdvanceResultModel> popular_list = new List<AdvanceResultModel>();
                 foreach (var item in AdvanceResponse.results)
                 {
@@ -206,16 +190,17 @@ namespace NontanCLI.Feature.Search
                     {
                         id = item.id.ToString();
                     }
-                    if (item.title.english != null)
+                    if (item.title.romaji != null)
                     {
-                        title = item.title.english.ToString();
-                        list_name.Add(item.title.english.ToString());
+
+                        title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
+                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
 
                     }
-                    else if (item.title.romaji != null)
+                    else if (item.title.english != null)
                     {
-                        title = item.title.romaji.ToString();
-                        list_name.Add(item.title.romaji.ToString());
+                        title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
+                        list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
 
                     }
                     if (item.status != null)
@@ -230,6 +215,7 @@ namespace NontanCLI.Feature.Search
                     {
                         rating = item.rating.ToString();
                     }
+
 
                     if (status == "Completed")
                     {
@@ -264,25 +250,25 @@ namespace NontanCLI.Feature.Search
                 {
                     foreach (var i in list_result)
                     {
-                        if (i.title.english != null)
-                        {
-                            if (_prompt == i.title.english)
-                            {
-                                DetailAnime.GetDetailParams(i.id);
-                            }
-                        }
-                        else if (i.title.romaji != null)
+                        if (i.title.romaji != null)
                         {
                             if (_prompt == i.title.romaji)
                             {
-                                DetailAnime.GetDetailParams(i.id);
+                                new DetailAnime().GetDetailParams(i.id);
+                            }
+                        }
+                        else if (i.title.english != null)
+                        {
+                            if (_prompt == i.title.english)
+                            {
+                                new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
                             if (_prompt == i.title.english)
                             {
-                                DetailAnime.GetDetailParams(i.id);
+                                new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                     }
@@ -295,10 +281,7 @@ namespace NontanCLI.Feature.Search
                 // clear the screen
                 AnsiConsole.Clear();
                 Program.MenuHandlerInvoke();
-                return;
             }
-
-            
         }
     }
 }

@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace NontanCLI.Feature.UpdateManager
 {
-    internal class UpdateManager
+    public class UpdateManager
     {
-        public static UpdatesRoot response;
+        public UpdatesRoot response;
 
-        public static void UpdateManagerInvoke()
+        public void UpdateManagerInvoke()
         {
             try
             {

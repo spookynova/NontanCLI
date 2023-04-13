@@ -7,20 +7,20 @@ using Spectre.Console;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace NontanCLI.Feature.Trending
 {
-    internal class TrendingAnime
+    public class TrendingAnime
     {
-        public static int page = 1;
+        public int page = 1;
 
-        public static RestResponse req;
-        public static TrendingRoot response;
+        public RestResponse req;
+        public TrendingRoot response;
 
         [Obsolete]
-        public static void TrendingAnimeInvoke()
+        public void TrendingAnimeInvoke()
         {
             Table table = new Table();
 
@@ -40,7 +40,7 @@ namespace NontanCLI.Feature.Trending
             if (response != null)
             {
 
-                table.Title = new TableTitle($"\n\n[green]Popular Anime Page {response.currentPage.ToString()}[/]");
+                table.Title = new TableTitle($"\n\n[green]Trending Anime Page {response.currentPage}[/]");
                 table.AddColumn("[green]ID[/]");
                 table.AddColumn("[green]Title[/]");
                 table.AddColumn("[green]Status[/]");
@@ -61,16 +61,17 @@ namespace NontanCLI.Feature.Trending
                     {
                         id = item.id.ToString();
                     }
-                    if (item.title.english != null)
+                    if (item.title.romaji != null)
                     {
-                        title = item.title.english.ToString();
-                        list_name.Add(item.title.english.ToString());
+                        
+                        title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
+                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
 
                     }
-                    else if (item.title.romaji != null)
+                    else if (item.title.english != null)
                     {
-                        title = item.title.romaji.ToString();
-                        list_name.Add(item.title.romaji.ToString());
+                        title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
+                        list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
 
                     }
                     if (item.status != null)
@@ -85,7 +86,18 @@ namespace NontanCLI.Feature.Trending
                     {
                         rating = item.rating.ToString();
                     }
-                    table.AddRow(id, title, status, type, rating);
+
+
+                    if (status == "Completed")
+                    {
+                        table.AddRow(id, title, "[green]" + status + "[/]", type, rating);
+
+                    }
+                    else if (status == "Ongoing")
+                    {
+                        table.AddRow(id, title, "[yellow]" + status + "[/]", type, rating);
+
+                    }
                 }
 
                 AnsiConsole.Render(table);
@@ -136,25 +148,25 @@ namespace NontanCLI.Feature.Trending
                     }
                     foreach (var i in popular_list)
                     {
-                        if (i.title.english != null)
-                        {
-                            if (_selected_anime == i.title.english)
-                            {
-                                DetailAnime.GetDetailParams(i.id);
-                            }
-                        }
-                        else if (i.title.romaji != null)
+                        if (i.title.romaji != null)
                         {
                             if (_selected_anime == i.title.romaji)
                             {
-                                DetailAnime.GetDetailParams(i.id);
+                                new DetailAnime().GetDetailParams(i.id);
+                            }
+                        }
+                        else if (i.title.english != null)
+                        {
+                            if (_selected_anime == i.title.english)
+                            {
+                                new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
                             if (_selected_anime == i.title.english)
                             {
-                                DetailAnime.GetDetailParams(i.id);
+                                new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                     }

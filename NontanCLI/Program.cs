@@ -29,8 +29,8 @@ namespace NontanCLI
     public class Program
     {
 
-        public static string version = "1.0.1 beta.3.8.23";
-        public static string buildVersion = "2";
+        public static string version = "1.0.3 beta.12.4.23";
+        public static string buildVersion = "3";
 
         public static UpdatesRoot response;
 
@@ -38,10 +38,6 @@ namespace NontanCLI
         static void Main(string[] args)
         {
 
-
-
-
-            
             if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"vlc")+ "/vlc.exe"))
             {
                 if (!AnsiConsole.Confirm("vlc is missing, you must have vlc to use this tool, download VLC ?"))
@@ -101,7 +97,7 @@ namespace NontanCLI
             }
                 
 
-            UpdateManager.UpdateManagerInvoke();
+            new UpdateManager().UpdateManagerInvoke();
 
             
 
@@ -109,20 +105,34 @@ namespace NontanCLI
             {
                 if (args[0] == "-s")
                 {
-                    SearchAnime.SearchAnimeInvoke(args[1]);
+                    new SearchAnime().SearchAnimeInvoke(args[1]);
                 }
 
                 if (args[0] == "-h")
                 {
-                    Console.WriteLine("Help");
+                    Console.WriteLine("-- Help --");
                     Console.WriteLine("-s search anime, example -s Naruto");
                     Console.WriteLine("-w watch anime, example -w kubo-san-wa-mob-wo-yurusanai-episode-6");
+                    Console.WriteLine("-p popular anime");
+                    Console.WriteLine("-t trending anime");
+                    Console.WriteLine("-v version");
+                    Console.WriteLine("-h help");
 
                 }
 
                 if (args[0] == "-v")
                 {
                     AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})\n\n");
+                }
+
+                if (args[0] == "-t")
+                {
+                    new TrendingAnime().TrendingAnimeInvoke();
+                }
+
+                if (args[0] == "-p")
+                {
+                    new PopularAnime().PopularAnimeInvoke();
                 }
 
                 if (args[0] == "-w")
@@ -141,18 +151,18 @@ namespace NontanCLI
         public static void MenuHandlerInvoke()
         {
 
-            var _prompt = MenuHandler.MenuHandlerInvoke();
+            var _prompt = new MenuHandler().MenuHandlerInvoke();
 
             switch (_prompt)
             {
                 case "Popular":
                     Console.Clear();
-                    PopularAnime.PopularAnimeInvoke();
+                    new PopularAnime().PopularAnimeInvoke();
                     Console.ReadLine();
                     break;
                 case "Trending":
                     Console.Clear();
-                    TrendingAnime.TrendingAnimeInvoke();
+                    new TrendingAnime().TrendingAnimeInvoke();
                     Console.ReadLine();
                     break;
                 case "Search":
@@ -171,8 +181,9 @@ namespace NontanCLI
                     switch (_search_by)
                     {
                         case "Search By Genres":
+                            
+                            Genres:
                             List<string> genres = new List<string>();
-
                             var _selected_genres = AnsiConsole.Prompt(
                                 new MultiSelectionPrompt<string>()
                                     .Title("Select [green]Available Genres[/]?")
@@ -191,6 +202,14 @@ namespace NontanCLI
                                         "Supernatural", "Thriller"
                                     }));
 
+                            if (_selected_genres.Count == 0)
+                            {
+                                AnsiConsole.MarkupLine("[red]You must select at least one genres, Press anyting to continue[/]");
+                                Console.ReadLine();
+                                Console.Clear();
+                                goto Genres;
+                            }
+
                             // Write the selected fruits to the terminal
                             for (int i = 0; i < _selected_genres.Count; i++)
                             {
@@ -198,12 +217,12 @@ namespace NontanCLI
                             }
                             
                             AnsiConsole.MarkupLine("You selected: [green]{0}[/]", string.Join(", ", genres));
-                            SearchAnime.AdvanceSearchByGenresInvoke(genres);
+                            new SearchAnime().AdvanceSearchByGenresInvoke(genres);
                             break;
 
                         case "Search By Query":
                             var query = AnsiConsole.Ask<string>("Okay, what anime do you want to search ? [green]example : One Piece[/] > ");
-                            SearchAnime.SearchAnimeInvoke(query);
+                            new SearchAnime().SearchAnimeInvoke(query);
                             break;
 
                         case "Back":
