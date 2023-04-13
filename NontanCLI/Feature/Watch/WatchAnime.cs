@@ -11,14 +11,14 @@ using System.Runtime.InteropServices;
 using System.IO;
 namespace NontanCLI.Feature.Watch
 {
-    internal class WatchAnime
+    public class WatchAnime
     {
 
-        public static RestResponse req;
-        public static WatchRoot response;
+        private RestResponse req;
+        private static WatchRoot response;
 
         [Obsolete]
-        public static void WatchAnimeInvoke(string episode_id)
+        public void WatchAnimeInvoke(string episode_id)
         {
 
             try

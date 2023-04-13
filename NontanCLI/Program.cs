@@ -32,7 +32,7 @@ namespace NontanCLI
         public static string version = "1.0.3 beta.12.4.23";
         public static string buildVersion = "3";
 
-        public static UpdatesRoot response;
+        private static UpdatesRoot response;
 
         [Obsolete]
         static void Main(string[] args)
@@ -137,7 +137,7 @@ namespace NontanCLI
 
                 if (args[0] == "-w")
                 {
-                    WatchAnime.WatchAnimeInvoke(args[1]);
+                    new WatchAnime().WatchAnimeInvoke(args[1]);
                 }
             }
             else
@@ -175,9 +175,6 @@ namespace NontanCLI
                         .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
                         .AddChoices("Search By Genres", "Search By Query","Back"));
 
-
-                    
-                    
                     switch (_search_by)
                     {
                         case "Search By Genres":
@@ -229,6 +226,11 @@ namespace NontanCLI
                             Console.Clear();
                             MenuHandlerInvoke();
                             break;
+
+                        default:
+                            Console.Clear();
+                            MenuHandlerInvoke();
+                            break;
                     }
 
 
@@ -240,6 +242,11 @@ namespace NontanCLI
                     Console.Clear();
                     Console.WriteLine("Exit");
                     Console.ReadLine();
+                    break;
+
+                default:
+                    Console.Clear();
+                    MenuHandlerInvoke();
                     break;
             }
         }

@@ -15,8 +15,8 @@ namespace NontanCLI.Feature.Detail
 {
     public class DetailAnime
     {
-        public RestResponse req;
-        public InfoRoot response;
+        private RestResponse req;
+        private InfoRoot response;
 
         [Obsolete]
         public void GetDetailParams(string id)
@@ -168,7 +168,7 @@ namespace NontanCLI.Feature.Detail
                 }
             }
             
-            WatchAnime.WatchAnimeInvoke(episode_id);
+            new WatchAnime().WatchAnimeInvoke(episode_id);
         }
     }
 }

@@ -16,10 +16,10 @@ namespace NontanCLI.Feature.Popular
 {
     public class PopularAnime
     {
-        public int page = 1;
+        private int page = 1;
 
-        public RestResponse req;
-        public PopularRoot response;
+        private RestResponse req;
+        private PopularRoot response;
 
         [Obsolete]
         public void PopularAnimeInvoke()

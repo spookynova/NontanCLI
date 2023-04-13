@@ -16,9 +16,9 @@ namespace NontanCLI.Feature.Search
     public class SearchAnime
     {
 
-        public RestResponse req;
-        public SearchRoot response;
-        public AdvanceRoot AdvanceResponse;
+        private RestResponse req;
+        private SearchRoot response;
+        private AdvanceRoot AdvanceResponse;
         [Obsolete]
         public void SearchAnimeInvoke(string query)
         {

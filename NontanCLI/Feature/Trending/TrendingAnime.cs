@@ -14,10 +14,10 @@ namespace NontanCLI.Feature.Trending
 {
     public class TrendingAnime
     {
-        public int page = 1;
+        private int page = 1;
 
-        public RestResponse req;
-        public TrendingRoot response;
+        private RestResponse req;
+        private TrendingRoot response;
 
         [Obsolete]
         public void TrendingAnimeInvoke()

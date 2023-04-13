@@ -13,7 +13,7 @@ namespace NontanCLI.Feature.UpdateManager
 {
     public class UpdateManager
     {
-        public UpdatesRoot response;
+        private UpdatesRoot response;
 
         public void UpdateManagerInvoke()
         {
