@@ -1,3 +1,6 @@
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/15e74bf4aad747a68d341786c052fb6d)](https://app.codacy.com/gh/evnx32/NontanCLI?utm_source=github.com&utm_medium=referral&utm_content=evnx32/NontanCLI&utm_campaign=Badge_Grade)
+
 <div align="center" style="font-size: large;">
    <h1>NontanCLI</h1>
    <h3>Simple Console App for streaming Anime</h3>
