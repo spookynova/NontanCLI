@@ -1,6 +1,6 @@
 <div align="center" style="font-size: large;">
    <h1>NontanCLI</h1>
-   <h3>Simple Console App for streaming Anime</h3>
+   <h3>Simple Console App for streaming Anime using <a href="https://github.com/consumet/api.consumet.org">Consumet API</a></h3>
 </div>
 
 <p align="center"><a href="https://choosealicense.com/licenses/mit/"><img
