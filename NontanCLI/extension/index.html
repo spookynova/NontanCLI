@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+
+<head>
+    <meta charset="utf-8">
+    <title>HLS.JS + Plyr Demo</title>
+    <meta name="description" content="HLS.JS And Plyr Demo">
+    <link rel="stylesheet" href="https://cdn.plyr.io/3.6.9/plyr.css">
+</head>
+
+
+
+<body>
+    <div class="video-wrapper">
+        <video preload="none" id="player" controls crossorigin></video>
+    </div>
+    <script src="https://cdn.plyr.io/3.6.9/plyr.js"></script>
+    <script src="https://cdn.jsdelivr.net/hls.js/latest/hls.js"></script>
+
+</body>
+
+</html>
+
+<script>
+    // Initialize Plyr
+    const players = Plyr.setup("video");
+    window.players = players;
+
+    // First Video
+    (function () {
+        var video = document.querySelector("#player");
+        if (Hls.isSupported()) {
+
+            // Initialize the player
+
+            var hls = new Hls();
+            hls.loadSource("http://localhost:8000/hls/animevideo.m3u8");
+            hls.attachMedia(video);
+            hls.on(Hls.Events.MANIFEST_PARSED, function () {
+                video.play();
+            });
+        } else if (video.canPlayType("application/vnd.apple.mpegurl")) {
+            video.src = "http://localhost:8000/hls/animevideo.m3u8";
+            video.addEventListener("loadedmetadata", function () {
+                video.play();
+            });
+
+        }
+        plyr.setup(video);
+    })();
+
+</script>

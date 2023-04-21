@@ -79,6 +79,9 @@
     <TargetZone>LocalIntranet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.6.0, Culture=neutral, PublicKeyToken=0e99375e54769942, processorArchitecture=MSIL">
+      <HintPath>..\packages\Portable.BouncyCastle.1.8.6.7\lib\net40\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
     </Reference>
@@ -143,6 +146,9 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="WebMediaToolkit, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WebMediaToolkit.0.1.0\lib\netstandard2.0\WebMediaToolkit.dll</HintPath>
+    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +162,7 @@
     <Compile Include="Feature\Menu.cs" />
     <Compile Include="Feature\Watch\WatchAnime.cs" />
     <Compile Include="Models\AdvanceSearchModel.cs" />
+    <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Models\InfoModel.cs" />
     <Compile Include="Models\PopularModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
@@ -174,6 +181,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
+    <Compile Include="Utils\Constant.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

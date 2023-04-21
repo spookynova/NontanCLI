@@ -23,6 +23,8 @@ using RestSharp;
 using Newtonsoft.Json;
 using NontanCLI.Models;
 using Ionic.Zip;
+using static Org.BouncyCastle.Math.EC.ECCurve;
+using NontanCLI.Utils;
 
 namespace NontanCLI
 {
@@ -32,11 +34,12 @@ namespace NontanCLI
         public static string version = "1.0.3 beta.12.4.23";
         public static string buildVersion = "3";
 
-        private static UpdatesRoot response;
 
         [Obsolete]
         static void Main(string[] args)
         {
+
+            UpdatesRoot response;
 
             if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"vlc")+ "/vlc.exe"))
             {
@@ -95,7 +98,21 @@ namespace NontanCLI
                 }
                 
             }
-                
+
+
+            // Check if config.json file exists
+            if (!File.Exists(Constant.ConfigPath))
+            {
+                // Create and write JSON content to config.json
+                ConfigModel config = new ConfigModel
+                {
+                    port = "8080",
+                    provider = "gogoanime"
+                };
+                string configFileContent = JsonConvert.SerializeObject(config, Formatting.Indented);
+                File.WriteAllText(Constant.ConfigPath, configFileContent);
+                Console.WriteLine("config.json file created with default values.");
+            } 
 
             new UpdateManager().UpdateManagerInvoke();
 
@@ -184,8 +201,8 @@ namespace NontanCLI
                             var _selected_genres = AnsiConsole.Prompt(
                                 new MultiSelectionPrompt<string>()
                                     .Title("Select [green]Available Genres[/]?")
-                                    .NotRequired() // Not required to have a favorite fruit
                                     .PageSize(10)
+                                    .Required()
                                     .MoreChoicesText("[grey](Move up and down to reveal more Genres)[/]")
                                     .InstructionsText(
                                         "[grey](Press [blue]<space>[/] to toggle a genres, " +
