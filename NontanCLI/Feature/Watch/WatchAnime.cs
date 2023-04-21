@@ -28,13 +28,11 @@ namespace NontanCLI.Feature.Watch
         private static WatchRoot response;
 
 
-        public static string m3u8_url;
-        public static int pageViews = 0;
-        public static int requestCount = 0;
+        private static string m3u8_url;
 
 
-        public static string htmlFilePath = @"extension/index.html";
-        public static string baseAddress = "http://localhost:8000/";
+        private static string htmlFilePath = @"extension/index.html";
+        private static string baseAddress = "http://localhost:8000/";
 
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)

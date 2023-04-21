@@ -8,12 +8,12 @@ namespace NontanCLI.Utils
 {
     public class Constant
     {
-        public const string BaseUrl = "https://api.consumet.org/";
-        public const string CORS = "https://m3u8-proxy-imkryp70n.vercel.app/cors?url=";
+        public static string BaseUrl = "https://api.consumet.org/";
+        public static string CORS = "https://m3u8-proxy-imkryp70n.vercel.app/cors?url=";
 
         // config
 
-        public const string ConfigPath = "config.json";
+        public static string ConfigPath = "config.json";
 
     }
 }
