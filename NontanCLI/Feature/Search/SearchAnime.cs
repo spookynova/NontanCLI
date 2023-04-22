@@ -124,21 +124,21 @@ namespace NontanCLI.Feature.Search
                 {
                     if (i.title.romaji != null)
                     {
-                        if (_prompt == i.title.romaji)
+                        if (_prompt == regex.Replace(i.title.romaji.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                     else if (i.title.english != null)
                     {
-                        if (_prompt == i.title.english)
+                        if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                     else
                     {
-                        if (_prompt == i.title.english)
+                        if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
@@ -199,7 +199,7 @@ namespace NontanCLI.Feature.Search
                     {
 
                         title = regex.Replace(item.title.romaji.ToString(), string.Empty);
-                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
+                        list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
@@ -257,21 +257,21 @@ namespace NontanCLI.Feature.Search
                     {
                         if (i.title.romaji != null)
                         {
-                            if (_prompt == i.title.romaji)
+                            if (_prompt == regex.Replace(i.title.romaji.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else if (i.title.english != null)
                         {
-                            if (_prompt == i.title.english)
+                            if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
-                            if (_prompt == i.title.english)
+                            if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
