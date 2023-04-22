@@ -23,8 +23,8 @@ using RestSharp;
 using Newtonsoft.Json;
 using NontanCLI.Models;
 using Ionic.Zip;
-using static Org.BouncyCastle.Math.EC.ECCurve;
 using NontanCLI.Utils;
+using NontanCLI.Feature.Recent;
 
 namespace NontanCLI
 {
@@ -99,21 +99,6 @@ namespace NontanCLI
                 
             }
 
-
-            // Check if config.json file exists
-            if (!File.Exists(Constant.ConfigPath))
-            {
-                // Create and write JSON content to config.json
-                ConfigModel config = new ConfigModel
-                {
-                    port = "8080",
-                    provider = "gogoanime"
-                };
-                string configFileContent = JsonConvert.SerializeObject(config, Formatting.Indented);
-                File.WriteAllText(Constant.ConfigPath, configFileContent);
-                Console.WriteLine("config.json file created with default values.");
-            } 
-
             new UpdateManager().UpdateManagerInvoke();
 
             
@@ -159,7 +144,7 @@ namespace NontanCLI
             }
             else
             {
-
+                Constant.InitConfig();
                 MenuHandlerInvoke();
             }
         }
@@ -172,17 +157,22 @@ namespace NontanCLI
 
             switch (_prompt)
             {
-                case "Popular":
+                case "Popular Anime":
                     Console.Clear();
                     new PopularAnime().PopularAnimeInvoke();
                     Console.ReadLine();
                     break;
-                case "Trending":
+                case "Trending Anime":
                     Console.Clear();
                     new TrendingAnime().TrendingAnimeInvoke();
                     Console.ReadLine();
                     break;
-                case "Search":
+                case "Recent Anime":
+                    Console.Clear();
+                    new RecentAnime().RecentAnimeInvoke();
+                    Console.ReadLine();
+                    break;
+                case "Search Anime":
                     Console.Clear();
 
                     var _search_by = AnsiConsole.Prompt(
