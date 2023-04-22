@@ -10,7 +10,8 @@
 <a href="https://app.codacy.com/gh/evnx32/NontanCLI/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img src="https://app.codacy.com/project/badge/Grade/23e02b33cf364d7190678d4958267375" alt="Codacy Badge"></a>
          <a href="https://img.shields.io/github/v/release/evnx32/NontanCLI"><img
          src="https://img.shields.io/github/v/release/evnx32/NontanCLI" alt="Release" /></a>
-         </p>
+         <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/evnx32/NontanCLI/total?color=fffffff">
+</p>
 
 <h2 id="screenshots">Screenshots</h2>
 <figure>
