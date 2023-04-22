@@ -85,6 +85,9 @@
     <Reference Include="Ionic.Zip, Version=1.9.1.8, Culture=neutral, PublicKeyToken=edbe51ad942a3f5c, processorArchitecture=MSIL">
       <HintPath>..\packages\Ionic.Zip.1.9.1.8\lib\Ionic.Zip.dll</HintPath>
     </Reference>
+    <Reference Include="M3U8Proxy">
+      <HintPath>.\M3U8Proxy.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
     </Reference>
@@ -146,9 +149,6 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
-    <Reference Include="WebMediaToolkit, Version=0.1.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\WebMediaToolkit.0.1.0\lib\netstandard2.0\WebMediaToolkit.dll</HintPath>
-    </Reference>
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
@@ -156,6 +156,7 @@
     <Compile Include="Feature\Detail\DetailAnime.cs" />
     <Compile Include="Feature\DownloadManager\DownloadManager.cs" />
     <Compile Include="Feature\Popular\PopularAnime.cs" />
+    <Compile Include="Feature\Recent\RecentAnime.cs" />
     <Compile Include="Feature\Search\SearchAnime.cs" />
     <Compile Include="Feature\Trending\TrendingAnime.cs" />
     <Compile Include="Feature\UpdateManager\UpdateManager.cs" />
@@ -165,6 +166,7 @@
     <Compile Include="Models\ConfigModel.cs" />
     <Compile Include="Models\InfoModel.cs" />
     <Compile Include="Models\PopularModel.cs" />
+    <Compile Include="Models\RecentModel.cs" />
     <Compile Include="Models\SearchModel.cs" />
     <Compile Include="Models\TrendingModel.cs" />
     <Compile Include="Models\UpdatesModel.cs" />
@@ -219,7 +221,9 @@
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>
-    </PreBuildEvent>
+    <PreBuildEvent>mkdir "$(TargetDir)extension"
+mkdir "$(OutDir)extension"
+xcopy "$(ProjectDir)extension" "$(TargetDir)extension" /E /Y
+xcopy "$(ProjectDir)extension" "$(OutDir)extension" /E /Y</PreBuildEvent>
   </PropertyGroup>
 </Project>
