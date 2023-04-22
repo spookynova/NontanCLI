@@ -7,20 +7,14 @@ using NontanCLI.Models;
 using RestSharp;
 using System.Diagnostics;
 using System.Threading;
-using System.Runtime.InteropServices;
 using System.IO;
 using System.Net;
-using System.Threading.Tasks;
-using System.Net.Http;
-using System.Linq;
 using System.Text;
-using System.Windows;
-using WebMediaToolkit.Hls;
-using System.Web;
 using NontanCLI.Utils;
 
 namespace NontanCLI.Feature.Watch
 {
+
     public class WatchAnime
     {
 
@@ -29,18 +23,30 @@ namespace NontanCLI.Feature.Watch
 
 
         private static string m3u8_url;
+        private static string vtt_url;
 
-
-        private static string htmlFilePath = @"extension/index.html";
-        private static string baseAddress = "http://localhost:8000/";
+        // Default port for the server
+        
+        private static string playerFilePath = @"extension/player/index.html";
 
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)
         {
 
+    
+
             try
             {
-                req = RestSharpHelper.GetResponse($"meta/anilist/watch/{episode_id}");
+                string Query = "";
+                if (Constant.provider == "zoro")
+                {
+                    Query = $"anime/zoro/watch?episodeId={episode_id}";
+                } else
+                {
+                    Query = $"anime/{Constant.provider}/watch/{episode_id}";
+                }
+
+                req = RestSharpHelper.GetResponse(Query);
                 response = JsonConvert.DeserializeObject<WatchRoot>(req.Content);
             } catch (Exception ex)
             {
@@ -76,33 +82,31 @@ namespace NontanCLI.Feature.Watch
             }
             else
             {
-                while (true)
+
+                foreach (var item in response.sources)
                 {
-
-                    foreach (var item in response.sources)
+                    if (item.quality.ToString() == _prompt)
                     {
-                        if (item.quality.ToString() == _prompt)
+                        var _selected_player = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("\n[green]Select video player available[/]?")
+                                .PageSize(10)
+                                .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
+                                .AddChoices(new[] { "VLC", "Browser" }));
+
+                        if (_selected_player == "VLC")
                         {
-
-                            var _selected_player = AnsiConsole.Prompt(
-                                new SelectionPrompt<string>()
-                                    .Title("\n[green]Select video player available[/]?")
-                                    .PageSize(10)
-                                    .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
-                                    .AddChoices(new[] {"VLC" , "Browser (localhost)"} ));
-
-                            if (_selected_player == "VLC")
-                            {
-                                PlayOnVLC(item.url.ToString());
-                            } else if (_selected_player == "Browser")
-                            {
-                                PlayOnBrowser(item.url.ToString());
-                            } else
-                            {
-                                PlayOnBrowser(item.url.ToString());
-                            }
-
+                            PlayOnVLC(item.url.ToString());
                         }
+                        else if (_selected_player == "Browser")
+                        {
+                            PlayOnBrowser(item.url.ToString());
+                        }
+                        else
+                        {
+                            PlayOnBrowser(item.url.ToString());
+                        }
+
                     }
                 }
             }
@@ -111,10 +115,18 @@ namespace NontanCLI.Feature.Watch
         [Obsolete]
         private void PlayOnVLC(string url)
         {
+
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
 
-            Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+            if (!File.Exists(CURRENT_DIR + "\\vlc\\vlc.exe"))
+            {
+                AnsiConsole.MarkupLine("[bold red]Cannot play with VLC, VLC is missing !![/]");
+                Console.ReadKey();
+                return;
+            }
 
+
+            Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
 
             Thread.Sleep(5000);
             while (true)
@@ -128,19 +140,49 @@ namespace NontanCLI.Feature.Watch
             }
         }
 
+        [Obsolete]
         private void PlayOnBrowser(string url)
         {
+
+            string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!File.Exists(CURRENT_DIR + playerFilePath))
+            {
+                AnsiConsole.MarkupLine("[bold red]Cannot play with Browser, Player is missing !![/]");
+                Console.ReadKey();
+                return;
+            }
+
             // Bypass CORS
+
             m3u8_url = Constant.CORS + url;
             Thread serverThread = new Thread(() =>
             {
                 HttpListener listener = new HttpListener();
-                listener.Prefixes.Add(baseAddress);
+                listener.Prefixes.Add(Constant.baseAddress);
                 listener.Start();
-                Console.WriteLine($"Server started at {baseAddress}. Listening for requests...");
+                AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");
+                AnsiConsole.MarkupLine("Press [green] Q [/] to stop the server..");
 
                 while (true)
                 {
+                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
+                    {
+                        if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
+                        {
+                            listener.Stop();
+                            Console.Clear();
+                            Console.WriteLine("Server stopped.");
+                            Program.MenuHandlerInvoke();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Continuing server operation...");
+                        }
+                    }
+
+
                     HttpListenerContext ctx = listener.GetContext();
                     HttpListenerRequest request = ctx.Request;
                     HttpListenerResponse resp = ctx.Response;
@@ -150,14 +192,14 @@ namespace NontanCLI.Feature.Watch
                     if (requestUrl == "/")
                     {
                         // Serve the HTML file
-                        string html = File.ReadAllText(htmlFilePath);
+                        string html = File.ReadAllText(playerFilePath);
                         byte[] buffer = Encoding.UTF8.GetBytes(html);
                         resp.ContentType = "text/html";
                         resp.ContentLength64 = buffer.Length;
                         resp.OutputStream.Write(buffer, 0, buffer.Length);
                         resp.OutputStream.Close();
                     }
-                    else if (requestUrl == "/hls/animevideo.m3u8")
+                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html , ( extension > player > index.html )
                     {
                         // Redirect to the online m3u8 URL
                         resp.Redirect(m3u8_url);
@@ -165,7 +207,7 @@ namespace NontanCLI.Feature.Watch
                     }
                     else
                     {
-                        // Return 404 for any other requests cuz i really don't care lol 
+                        // Return 404 for any other requests cuz i really lazy to make some feature lol
                         resp.StatusCode = 404;
                         resp.OutputStream.Close();
                     }
@@ -175,11 +217,10 @@ namespace NontanCLI.Feature.Watch
             serverThread.Start();
 
             // Open the HTML file in the default web browser
-            Process.Start(baseAddress);
+            Process.Start(Constant.baseAddress);
 
             // Wait for the server thread to exit
             serverThread.Join();
         }
-
     }
 }
