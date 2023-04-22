@@ -1,7 +1,4 @@
-<div align="center" style="font-size: large;">
-   <h1>NontanCLI</h1>
-   <h3>Simple Console App for streaming Anime using <a href="https://github.com/consumet/api.consumet.org">Consumet API</a></h3>
-</div>
+<p><img src="https://raw.githubusercontent.com/evnx32/NontanCLI/main/Image/logo_nontan.png" alt="Logo"></p>
 
 <p align="center"><a href="https://choosealicense.com/licenses/mit/"><img
          src="https://img.shields.io/bower/l/Mi" alt="MIT License" /></a> 
