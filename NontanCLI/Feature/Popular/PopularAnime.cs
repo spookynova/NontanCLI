@@ -26,6 +26,7 @@ namespace NontanCLI.Feature.Popular
         {
             Table table = new Table();
 
+            Regex regex = new Regex(@"[\[\]]");
 
             try
             {
@@ -65,14 +66,14 @@ namespace NontanCLI.Feature.Popular
                     if (item.title.romaji != null)
                     {
 
-                        title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                     }
                     if (item.status != null)
@@ -150,21 +151,21 @@ namespace NontanCLI.Feature.Popular
                     {
                         if (i.title.romaji != null)
                         {
-                            if (_selected_anime == i.title.romaji)
+                            if (_selected_anime == regex.Replace(i.title.romaji.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else if (i.title.english != null)
                         {
-                            if (_selected_anime == i.title.english)
+                            if (_selected_anime == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
-                            if (_selected_anime == i.title.english)
+                            if (_selected_anime == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
