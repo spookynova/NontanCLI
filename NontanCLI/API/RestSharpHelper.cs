@@ -6,16 +6,16 @@ using System.Text;
 using System.Threading.Tasks;
 using RestSharp;
 using System.Threading;
+using NontanCLI.Utils;
 using Spectre.Console;
 
 namespace NontanCLI.API
 {
     public static class RestSharpHelper 
     {
-        const string BaseUrl = "https://api.consumet.org/";
 
         // create a new instance of the RestSharp client
-        private static RestClient client = new RestClient(BaseUrl);
+        private static RestClient client = new RestClient(Constant.BaseUrl);
 
         // create a new method to get the response
         public static RestResponse GetResponse(string endpoint)
@@ -24,8 +24,6 @@ namespace NontanCLI.API
             AnsiConsole.Status()
                 .Start("Fetching Server...", ctx =>
                 {
-                    // Simulate some work
-                    Thread.Sleep(1000);
 
                     // Update the status and spinner
                     ctx.Status("Retrieving Data From Server...");

@@ -1,0 +1,67 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.2/plyr.css">
+  <link rel="stylesheet" href="https://cdn.plyr.io/3.5.2/demo.css">
+  <script
+    src="https://cdn.polyfill.io/v2/polyfill.min.js?features=es6,Array.prototype.includes,CustomEvent,Object.entries,Object.values,URL,Math.trunc"></script>
+  <script src="https://cdn.plyr.io/3.5.2/plyr.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+</head>
+
+<body>
+  <main>
+    <div id="container">
+      <video controls crossorigin playsinline autoplay id="player">
+        <track kind="captions" label="English" srclang="en" src="https://cc.zorores.com/8e/c6/8ec638dd62d5da923983f3cdd86fa470/eng-2.vtt" default>
+      </video>
+    </div>
+  </main>
+</body>
+
+</html>
+
+<script>
+  const currentURL = window.location.href;
+
+  // Extract the port number from the URL
+  const portNumber = new URL(currentURL).port;
+  const source = `http://localhost:${portNumber}/hls/source.m3u8`;
+  console.log(source);
+
+  const player = new Plyr('#player', {
+    captions: { // Subtitle control options
+      active: true, // Enable subtitle control
+      language: 'en' // Set default subtitle language
+    },
+    quality: { // Quality control options
+      default: 0, // Set default quality level to the first available quality
+      options: [], // Initialize available quality options as an empty array
+      forced: false, // Do not force any quality option
+      onChange: (quality) => { // Callback function when quality changes
+        console.log('Quality changed to', quality);
+      }
+    }
+  });
+
+  var video = document.getElementById('player');
+  if (Hls.isSupported()) {
+    var hls = new Hls();
+    hls.loadSource(source);
+    hls.attachMedia(video);
+    hls.on(Hls.Events.MANIFEST_PARSED, function (event, data) {
+      // Update quality options dynamically based on the available qualities in the manifest
+      player.updateSettings({
+        quality: {
+          options: data.levels.map(level => level.height) // Extract available quality levels from HLS manifest
+        }
+      });
+      video.play();
+    });
+  } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+    video.src = source;
+    video.addEventListener('loadedmetadata', function () {
+      video.play();
+    });
+  }
+</script>

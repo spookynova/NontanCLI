@@ -46,6 +46,10 @@ namespace NontanCLI.Feature.Trending
                 table.AddColumn("[green]Status[/]");
                 table.AddColumn("[green]Type[/]");
                 table.AddColumn("[green]Rating[/]");
+
+                Regex regex = new Regex(@"[\[\]]");
+
+
                 List<string> list_name = new List<string>();
                 List<TrendingResultModel> popular_list = new List<TrendingResultModel>();
                 foreach (var item in response.results)
@@ -64,14 +68,14 @@ namespace NontanCLI.Feature.Trending
                     if (item.title.romaji != null)
                     {
                         
-                        title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.english.ToString(),  string.Empty));
 
                     }
                     if (item.status != null)
@@ -146,25 +150,29 @@ namespace NontanCLI.Feature.Trending
                     {
                         goto MenuPrompt;
                     }
+                    Console.WriteLine(_selected_anime);
+
                     foreach (var i in popular_list)
                     {
                         if (i.title.romaji != null)
                         {
-                            if (_selected_anime == i.title.romaji)
+                            Console.WriteLine(i.title.romaji);
+
+                            if (_selected_anime == regex.Replace(i.title.romaji.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else if (i.title.english != null)
                         {
-                            if (_selected_anime == i.title.english)
+                            if (_selected_anime == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
-                            if (_selected_anime == i.title.english)
+                            if (_selected_anime == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }

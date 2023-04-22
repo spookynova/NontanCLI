@@ -7,23 +7,46 @@ using NontanCLI.Models;
 using RestSharp;
 using System.Diagnostics;
 using System.Threading;
-using System.Runtime.InteropServices;
 using System.IO;
+using System.Net;
+using System.Text;
+using NontanCLI.Utils;
+
 namespace NontanCLI.Feature.Watch
 {
+
     public class WatchAnime
     {
 
         private RestResponse req;
         private static WatchRoot response;
 
+
+        private static string m3u8_url;
+        private static string vtt_url;
+
+        // Default port for the server
+        
+        private static string playerFilePath = @"extension/player/index.html";
+
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)
         {
 
+    
+
             try
             {
-                req = RestSharpHelper.GetResponse($"meta/anilist/watch/{episode_id}");
+                string Query = "";
+                if (Constant.provider == "zoro")
+                {
+                    Query = $"anime/zoro/watch?episodeId={episode_id}";
+                } else
+                {
+                    Query = $"anime/{Constant.provider}/watch/{episode_id}";
+                }
+
+                req = RestSharpHelper.GetResponse(Query);
                 response = JsonConvert.DeserializeObject<WatchRoot>(req.Content);
             } catch (Exception ex)
             {
@@ -42,6 +65,10 @@ namespace NontanCLI.Feature.Watch
             }
 
             quality_selection.Add("Back");
+
+            
+            
+
             var _prompt = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
                     .Title("\n[green]Select Quality Anime Video[/]?")
@@ -52,32 +79,151 @@ namespace NontanCLI.Feature.Watch
             if (_prompt == "Back")
             {
                 new MenuHandler().MenuHandlerInvoke();
-            } else
+            }
+            else
             {
+
                 foreach (var item in response.sources)
                 {
                     if (item.quality.ToString() == _prompt)
                     {
+                        var _selected_player = AnsiConsole.Prompt(
+                            new SelectionPrompt<string>()
+                                .Title("\n[green]Select video player available[/]?")
+                                .PageSize(10)
+                                .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
+                                .AddChoices(new[] { "VLC", "Browser" }));
 
-                        string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
-
-                        Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", item.url.ToString());
-
-                        // check if vlc is playing video
-
-                        Thread.Sleep(5000);
-                        while (true)
+                        if (_selected_player == "VLC")
                         {
-                            if (Process.GetProcessesByName("vlc").Length == 0)
-                            {
-                                Console.Clear();
-                                Program.MenuHandlerInvoke();
-                                break;
-                            }
+                            PlayOnVLC(item.url.ToString());
                         }
+                        else if (_selected_player == "Browser")
+                        {
+                            PlayOnBrowser(item.url.ToString());
+                        }
+                        else
+                        {
+                            PlayOnBrowser(item.url.ToString());
+                        }
+
                     }
                 }
             }
+        }
+
+        [Obsolete]
+        private void PlayOnVLC(string url)
+        {
+
+            string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!File.Exists(CURRENT_DIR + "\\vlc\\vlc.exe"))
+            {
+                AnsiConsole.MarkupLine("[bold red]Cannot play with VLC, VLC is missing !![/]");
+                Console.ReadKey();
+                return;
+            }
+
+
+            Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+
+            Thread.Sleep(5000);
+            while (true)
+            {
+                if (Process.GetProcessesByName("vlc").Length == 0)
+                {
+                    Console.Clear();
+                    Program.MenuHandlerInvoke();
+                    break;
+                }
+            }
+        }
+
+        [Obsolete]
+        private void PlayOnBrowser(string url)
+        {
+
+            string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
+
+            if (!File.Exists(CURRENT_DIR + playerFilePath))
+            {
+                AnsiConsole.MarkupLine("[bold red]Cannot play with Browser, Player is missing !![/]");
+                Console.ReadKey();
+                return;
+            }
+
+            // Bypass CORS
+
+            m3u8_url = Constant.CORS + url;
+            Thread serverThread = new Thread(() =>
+            {
+                
+                HttpListener listener = new HttpListener();
+
+
+                listener.Prefixes.Add(Constant.baseAddress);
+                listener.Start();
+                AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");
+                AnsiConsole.MarkupLine("Press [green] Q [/] to stop the server..");
+
+                while (true)
+                {
+                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
+                    {
+                        if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
+                        {
+                            listener.Stop();
+                            Console.Clear();
+                            Console.WriteLine("Server stopped.");
+                            Program.MenuHandlerInvoke();
+                            break;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Continuing server operation...");
+                        }
+                    }
+
+
+                    HttpListenerContext ctx = listener.GetContext();
+                    HttpListenerRequest request = ctx.Request;
+                    HttpListenerResponse resp = ctx.Response;
+
+                    string requestUrl = request.Url.AbsolutePath;
+
+                    if (requestUrl == "/")
+                    {
+                        // Serve the HTML file
+                        string html = File.ReadAllText(playerFilePath);
+                        byte[] buffer = Encoding.UTF8.GetBytes(html);
+                        resp.ContentType = "text/html";
+                        resp.ContentLength64 = buffer.Length;
+                        resp.OutputStream.Write(buffer, 0, buffer.Length);
+                        resp.OutputStream.Close();
+                    }
+                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html , ( extension > player > index.html )
+                    {
+                        // Redirect to the online m3u8 URL
+                        resp.Redirect(m3u8_url);
+                        resp.OutputStream.Close();
+                    }
+                    else
+                    {
+                        // Return 404 for any other requests cuz i really lazy to make some feature lol
+                        resp.StatusCode = 404;
+                        resp.OutputStream.Close();
+                    }
+                }
+            });
+
+            serverThread.Start();
+
+            // Open the HTML file in the default web browser
+            Process.Start(Constant.baseAddress);
+
+            // Wait for the server thread to exit
+            serverThread.Join();
         }
     }
 }

@@ -1,39 +1,39 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using NontanCLI.API;
+using NontanCLI.Feature.Detail;
+using NontanCLI.Models;
+using RestSharp;
+using Spectre.Console;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using NontanCLI.API;
-using RestSharp;
-using Spectre.Console;
-using NontanCLI.Models;
-using Newtonsoft.Json;
-using System.Collections;
-using NontanCLI.Feature.Detail;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
-namespace NontanCLI.Feature.Popular
+namespace NontanCLI.Feature.Recent
 {
-    public class PopularAnime
+    public class RecentAnime
     {
         private int page = 1;
 
         private RestResponse req;
-        private PopularRoot response;
+        private RecentRoot response;
 
         [Obsolete]
-        public void PopularAnimeInvoke()
+        public void RecentAnimeInvoke()
         {
             Table table = new Table();
-
             Regex regex = new Regex(@"[\[\]]");
+
 
             try
             {
-                req = RestSharpHelper.GetResponse($"meta/anilist/popular?page={page}");
-                response = JsonConvert.DeserializeObject<PopularRoot>(req.Content);
+                req = RestSharpHelper.GetResponse($"meta/anilist/recent-episodes?page={page}");
+                response = JsonConvert.DeserializeObject<RecentRoot>(req.Content);
 
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }
@@ -42,23 +42,25 @@ namespace NontanCLI.Feature.Popular
             if (response != null)
             {
 
-                table.Title = new TableTitle($"\n\n[green]Popular Anime Page {response.currentPage}[/]");
+                table.Title = new TableTitle($"\n\n[green]Recent Anime Page {response.currentPage} / {response.totalPages} Result : {response.totalResults}[/]");
                 table.AddColumn("[green]ID[/]");
                 table.AddColumn("[green]Title[/]");
-                table.AddColumn("[green]Status[/]");
+                table.AddColumn("[green]Episode[/]");
+                table.AddColumn("[green]Episode Title[/]");
                 table.AddColumn("[green]Type[/]");
                 table.AddColumn("[green]Rating[/]");
                 List<string> list_name = new List<string>();
-                List<PopularResultModel> popular_list = new List<PopularResultModel>();
+                List<RecentResultModel> recent_list = new List<RecentResultModel>();
                 foreach (var item in response.results)
                 {
-                    popular_list.Add(item);
+                    recent_list.Add(item);
 
                     string id = "";
                     string title = "";
-                    string status = "";
                     string type = "";
                     string rating = "";
+                    string episodeNumber = "";
+                    string episodeTitle = "";
                     if (item.id != null)
                     {
                         id = item.id.ToString();
@@ -76,9 +78,14 @@ namespace NontanCLI.Feature.Popular
                         list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                     }
-                    if (item.status != null)
+                    if (item.episodeNumber != null)
                     {
-                        status = item.status.ToString();
+                        episodeNumber = item.episodeNumber.ToString();
+                    }
+
+                    if (item.episodeTitle != null)
+                    {
+                        episodeTitle = item.episodeTitle.ToString();
                     }
                     if (item.type != null)
                     {
@@ -90,21 +97,13 @@ namespace NontanCLI.Feature.Popular
                     }
 
 
-                    if (status == "Completed")
-                    {
-                        table.AddRow(id, title, "[green]" + status + "[/]", type, rating);
+                    table.AddRow(id, title,  episodeNumber ,episodeTitle, type, rating);
 
-                    }
-                    else if (status == "Ongoing")
-                    {
-                        table.AddRow(id, title, "[yellow]" + status + "[/]", type, rating);
-
-                    }
                 }
 
                 AnsiConsole.Render(table);
 
-                MenuPrompt:
+            MenuPrompt:
 
                 string _prompt = "";
                 if (page > 1)
@@ -117,7 +116,8 @@ namespace NontanCLI.Feature.Popular
                         .AddChoices(new[] {
                                                         "Select Anime","Next Page","Previous Page","Back"
                         }));
-                } else
+                }
+                else
                 {
 
 
@@ -147,7 +147,7 @@ namespace NontanCLI.Feature.Popular
                     {
                         goto MenuPrompt;
                     }
-                    foreach (var i in popular_list)
+                    foreach (var i in recent_list)
                     {
                         if (i.title.romaji != null)
                         {
@@ -171,16 +171,18 @@ namespace NontanCLI.Feature.Popular
                             }
                         }
                     }
-                } else if (_prompt == "Next Page")
+                }
+                else if (_prompt == "Next Page")
                 {
                     page++;
                     AnsiConsole.Clear();
-                    PopularAnimeInvoke();
-                } else if (_prompt == "Previous Page")
+                    RecentAnimeInvoke();
+                }
+                else if (_prompt == "Previous Page")
                 {
                     page--;
                     AnsiConsole.Clear();
-                    PopularAnimeInvoke();
+                    RecentAnimeInvoke();
                 }
                 else
                 {

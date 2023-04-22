@@ -23,6 +23,12 @@ namespace NontanCLI.Models
 
         [JsonProperty("download")]
         public string download { get; set; }
+
+        [JsonProperty("subtitles")]
+        public List<WatchSubtitle> subtitles { get; set; }
+
+        [JsonProperty("intro")]
+        public WatchIntro intro { get; set; }
     }
 
     public class WatchSource
@@ -38,4 +44,21 @@ namespace NontanCLI.Models
     }
 
 
+    public class WatchSubtitle
+    {
+        [JsonProperty("url")]
+        public string url { get; set; }
+
+        [JsonProperty("lang")]
+        public string lang { get; set; }
+    }
+
+    public class WatchIntro
+    {
+        [JsonProperty("start")]
+        public int? start { get; set; }
+
+        [JsonProperty("end")]
+        public int? end { get; set; }
+    }
 }

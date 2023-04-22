@@ -33,6 +33,7 @@ namespace NontanCLI.Feature.Search
                 Console.WriteLine(ex.Message);
             }
 
+            Regex regex = new Regex(@"[\[\]]");
 
             table.Title = new TableTitle($"\n\nSearch Result for [green]{query}[/]");
             table.AddColumn("[green]ID[/]");
@@ -60,15 +61,14 @@ namespace NontanCLI.Feature.Search
                 }
                 if (item.title.romaji != null)
                 {
-
-                    title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
-                    list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
+                    title = regex.Replace(item.title.romaji.ToString(),string.Empty);
+                    list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                 }
                 else if (item.title.english != null)
                 {
-                    title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
-                    list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
+                    title = regex.Replace(item.title.english.ToString(), string.Empty);
+                    list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                 }
                 if (item.status != null)
@@ -116,25 +116,29 @@ namespace NontanCLI.Feature.Search
             }
             else
             {
+                Console.WriteLine("------------");
+
+                Console.WriteLine(_prompt);
+
                 foreach (var i in list_result)
                 {
                     if (i.title.romaji != null)
                     {
-                        if (_prompt == i.title.romaji)
+                        if (_prompt == regex.Replace(i.title.romaji.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                     else if (i.title.english != null)
                     {
-                        if (_prompt == i.title.english)
+                        if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
                     }
                     else
                     {
-                        if (_prompt == i.title.english)
+                        if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                         {
                             new DetailAnime().GetDetailParams(i.id);
                         }
@@ -150,6 +154,7 @@ namespace NontanCLI.Feature.Search
         {
             Table table = new Table();
 
+            Regex regex = new Regex(@"[\[\]]");
 
             try
             {
@@ -193,14 +198,14 @@ namespace NontanCLI.Feature.Search
                     if (item.title.romaji != null)
                     {
 
-                        title = Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.romaji.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty);
-                        list_name.Add(Regex.Replace(item.title.english.ToString(), "[^a-zA-Z ]", string.Empty));
+                        title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                     }
                     if (item.status != null)
@@ -252,21 +257,21 @@ namespace NontanCLI.Feature.Search
                     {
                         if (i.title.romaji != null)
                         {
-                            if (_prompt == i.title.romaji)
+                            if (_prompt == regex.Replace(i.title.romaji.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else if (i.title.english != null)
                         {
-                            if (_prompt == i.title.english)
+                            if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }
                         }
                         else
                         {
-                            if (_prompt == i.title.english)
+                            if (_prompt == regex.Replace(i.title.english.ToString(), string.Empty))
                             {
                                 new DetailAnime().GetDetailParams(i.id);
                             }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NontanCLI.Utils;
 using Spectre.Console;
 
 namespace NontanCLI.Feature
@@ -28,9 +29,11 @@ namespace NontanCLI.Feature
             // Project Link
             AnsiConsole.MarkupLine("[bold white]Project Link : https://github.com/evnx32/NontanCLI [/]");
             
-            // version
+            AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})");
 
-            AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})\n\n");
+
+            AnsiConsole.MarkupLine($"[bold white]Server :[/] [bold green]{Constant.provider}[/]\n\n");
+
 
             var _prompt = AnsiConsole.Prompt(
             new SelectionPrompt<string>()
@@ -38,7 +41,7 @@ namespace NontanCLI.Feature
                 .PageSize(10)
                 .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
                 .AddChoices(new[] {
-                    "Popular","Trending", "Search","Exit"
+                    "Popular Anime","Trending Anime", "Recent Anime", "Search Anime","Exit"
                 }));
 
             return _prompt;
