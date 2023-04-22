@@ -158,7 +158,10 @@ namespace NontanCLI.Feature.Watch
             m3u8_url = Constant.CORS + url;
             Thread serverThread = new Thread(() =>
             {
+                
                 HttpListener listener = new HttpListener();
+
+
                 listener.Prefixes.Add(Constant.baseAddress);
                 listener.Start();
                 AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");

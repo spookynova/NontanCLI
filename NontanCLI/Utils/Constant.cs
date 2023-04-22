@@ -11,8 +11,8 @@ namespace NontanCLI.Utils
 {
     public class Constant
     {
-        public static string BaseUrl = "https://api.consumet.org/";
-        public static string CORS = "https://m3u8-proxy-murex.vercel.app/cors?url=";
+        public static readonly string BaseUrl = "https://api.consumet.org/";
+        public static readonly string CORS = "https://m3u8-proxy-murex.vercel.app/cors?url=";
 
         public static string ConfigPath = "config.json";
         public static string PORT = "";
@@ -20,7 +20,7 @@ namespace NontanCLI.Utils
         public static string provider = "";
 
         
-        public static void InitConfig()
+        public void InitConfig()
         {
             // Check if config.json file exists
             if (File.Exists(ConfigPath))
