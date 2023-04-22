@@ -36,7 +36,7 @@
    <li>Finish</li>
    <li>Type NontanCLI for run the app #</li>
 </ul>
-<h2 id="installation">Some Issue</h2>
+<h2 id="installation">Environment Variable Path Issue</h2>
 <p>If you can’t run with NontanCLI on Command Prompt, check to
    environment variable.</p>
 <ul>
