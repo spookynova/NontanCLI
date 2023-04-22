@@ -2,6 +2,7 @@
 using NontanCLI.API;
 using NontanCLI.Feature.Watch;
 using NontanCLI.Models;
+using NontanCLI.Utils;
 using RestSharp;
 using Spectre.Console;
 using System;
@@ -24,7 +25,7 @@ namespace NontanCLI.Feature.Detail
 
             try
             { 
-                req = RestSharpHelper.GetResponse($"/meta/anilist/info/{id}");
+                req = RestSharpHelper.GetResponse($"/meta/anilist/info/{id}?provider={Constant.provider}");
                 response = JsonConvert.DeserializeObject<InfoRoot>(req.Content);
             } catch (Exception ex)
             {
