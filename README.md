@@ -15,7 +15,6 @@
          src="https://img.shields.io/github/v/release/evnx32/NontanCLI" alt="Release" /></a>
          </p>
 
-
 <h2 id="screenshots">Screenshots</h2>
 <figure>
    <img src="https://raw.githubusercontent.com/evnx32/NontanCLI/main/Image/Screenshot%202023-04-08%20081138.png"
