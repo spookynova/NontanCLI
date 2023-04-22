@@ -41,7 +41,7 @@ namespace NontanCLI.Utils
                     provider = "gogoanime"
                 };
                 string configFileContent = JsonConvert.SerializeObject(config, Formatting.Indented);
-                File.WriteAllText(Constant.ConfigPath, configFileContent);
+                File.WriteAllText(ConfigPath, configFileContent);
                 Console.WriteLine("config.json file created with default values.");
             }
         }
