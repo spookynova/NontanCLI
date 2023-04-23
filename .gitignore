@@ -3,8 +3,7 @@ bin/
 obj/
 
 # ignore build artifacts
-*.exe
-*.dll
+
 *.pdb
 *.user
 *.aps
