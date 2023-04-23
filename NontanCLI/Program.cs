@@ -25,14 +25,15 @@ using NontanCLI.Models;
 using Ionic.Zip;
 using NontanCLI.Utils;
 using NontanCLI.Feature.Recent;
+using System.Configuration;
 
 namespace NontanCLI
 {
     public class Program
     {
 
-        public static string version = "1.0.3 beta.12.4.23";
-        public static string buildVersion = "3";
+        public static string version = "1.0.3 beta.23.4.23";
+        public static string buildVersion = "4";
 
 
         [Obsolete]

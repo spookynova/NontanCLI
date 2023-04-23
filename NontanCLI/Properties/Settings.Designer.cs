@@ -25,10 +25,10 @@ namespace NontanCLI.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Setting {
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public string buildVersion {
             get {
-                return ((string)(this["Setting"]));
+                return ((string)(this["buildVersion"]));
             }
         }
     }

@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using NontanCLI.Utils;
+using System.Threading.Tasks.Sources;
 
 namespace NontanCLI.Feature.Watch
 {
@@ -22,12 +23,11 @@ namespace NontanCLI.Feature.Watch
         private static WatchRoot response;
 
 
-        private static string m3u8_url;
         private static string vtt_url;
 
         // Default port for the server
         
-        private static string playerFilePath = @"extension/player/index.html";
+        private static string playerFilePath = @"Plyr/index.html";
 
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)
@@ -58,6 +58,16 @@ namespace NontanCLI.Feature.Watch
 
             List<string> quality_selection = new List<string>();
 
+            if (response == null)
+            {
+
+                AnsiConsole.MarkupLine("[red]Something wrong, i can feet it [/]");
+
+                Thread.Sleep(10000);
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+            }
 
             foreach (var item in response.sources)
             {
@@ -65,9 +75,6 @@ namespace NontanCLI.Feature.Watch
             }
 
             quality_selection.Add("Back");
-
-            
-            
 
             var _prompt = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -83,9 +90,9 @@ namespace NontanCLI.Feature.Watch
             else
             {
 
-                foreach (var item in response.sources)
+                for (int i = 0; i < response.sources.Count; i++)
                 {
-                    if (item.quality.ToString() == _prompt)
+                    if (response.sources[i].quality.ToString() == _prompt)
                     {
                         var _selected_player = AnsiConsole.Prompt(
                             new SelectionPrompt<string>()
@@ -96,17 +103,42 @@ namespace NontanCLI.Feature.Watch
 
                         if (_selected_player == "VLC")
                         {
-                            PlayOnVLC(item.url.ToString());
+                            PlayOnVLC(response.sources[i].url.ToString());
                         }
                         else if (_selected_player == "Browser")
                         {
-                            PlayOnBrowser(item.url.ToString());
+                            if (response.subtitles != null)
+                            {
+                                List<string> subtitles = new List<string>();
+                                foreach (var item in response.subtitles)
+                                {
+                                    subtitles.Add(item.lang.ToString());
+                                }
+                                var _selectted_subtitles = AnsiConsole.Prompt(
+                                    new SelectionPrompt<string>()
+                                        .Title("\n[green]Select Subtitle available[/]?")
+                                        .PageSize(10)
+                                        .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
+                                        .AddChoices(subtitles.ToArray()));
+
+                                foreach (var sub in response.subtitles)
+                                {
+                                    if (_selectted_subtitles == sub.lang.ToString())
+                                    {
+                                        vtt_url = sub.url.ToString();
+                                    }
+                                }
+                            } else
+                            {
+                                vtt_url = "";
+                            }
+                            PlayOnBrowser(response.sources[i].url.ToString(),vtt_url);
+
                         }
                         else
                         {
-                            PlayOnBrowser(item.url.ToString());
+                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url);
                         }
-
                     }
                 }
             }
@@ -126,7 +158,12 @@ namespace NontanCLI.Feature.Watch
             }
 
 
-            Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+            //Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+
+            Process vlcProcess = new Process();
+            vlcProcess.StartInfo.FileName = CURRENT_DIR + "\\vlc\\vlc.exe";
+            vlcProcess.StartInfo.Arguments = $"{url} --sub-file={vtt_url}";
+            vlcProcess.Start();
 
             Thread.Sleep(5000);
             while (true)
@@ -141,7 +178,7 @@ namespace NontanCLI.Feature.Watch
         }
 
         [Obsolete]
-        private void PlayOnBrowser(string url)
+        private void PlayOnBrowser(string url, string sub_url)
         {
 
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
@@ -153,9 +190,22 @@ namespace NontanCLI.Feature.Watch
                 return;
             }
 
-            // Bypass CORS
 
-            m3u8_url = Constant.CORS + url;
+
+            if (!File.Exists(CURRENT_DIR + @"M3U8Proxy/M3U8Proxy.exe"))
+            {
+                AnsiConsole.MarkupLine("[bold red]Proxy Is Missing !![/]");
+                Console.ReadKey();
+                return;
+            }
+
+
+            Process vlcProcess = new Process();
+            vlcProcess.StartInfo.FileName = CURRENT_DIR + "\\M3U8Proxy\\M3U8Proxy";
+            vlcProcess.Start();
+
+            Thread.Sleep(2000);
+            // Bypass CORS
             Thread serverThread = new Thread(() =>
             {
                 
@@ -167,25 +217,8 @@ namespace NontanCLI.Feature.Watch
                 AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");
                 AnsiConsole.MarkupLine("Press [green] Q [/] to stop the server..");
 
-                while (true)
+                while (listener.IsListening)
                 {
-                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
-                    {
-                        if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
-                        {
-                            listener.Stop();
-                            Console.Clear();
-                            Console.WriteLine("Server stopped.");
-                            Program.MenuHandlerInvoke();
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Continuing server operation...");
-                        }
-                    }
-
-
                     HttpListenerContext ctx = listener.GetContext();
                     HttpListenerRequest request = ctx.Request;
                     HttpListenerResponse resp = ctx.Response;
@@ -202,11 +235,20 @@ namespace NontanCLI.Feature.Watch
                         resp.OutputStream.Write(buffer, 0, buffer.Length);
                         resp.OutputStream.Close();
                     }
-                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html , ( extension > player > index.html )
+                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html 
                     {
                         // Redirect to the online m3u8 URL
-                        resp.Redirect(m3u8_url);
+                        resp.Redirect(Constant.baseProxyAddress + url);
                         resp.OutputStream.Close();
+
+                    }   
+                    else if (requestUrl == "/hls/subtitle") // if you change this, you must change it too on player html
+                    {
+                        // Redirect to the online m3u8 URL
+                        Console.Write(sub_url);
+                        resp.Redirect(sub_url);    
+                        resp.OutputStream.Close();
+
                     }
                     else
                     {
@@ -214,7 +256,40 @@ namespace NontanCLI.Feature.Watch
                         resp.StatusCode = 404;
                         resp.OutputStream.Close();
                     }
+
+                    if (Console.KeyAvailable)
+                    {
+                        ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+
+                        if (keyInfo.Key == ConsoleKey.Q)
+                        {
+                            if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
+                            {
+                                listener.Stop();
+                                Console.Clear();
+                                Console.WriteLine("Server stopped.");
+                                string proxyProcess = "M3U8Proxy"; // Specify the process name to kill
+
+                                // Get all running processes with the specified process name
+                                Process[] processes = Process.GetProcessesByName(proxyProcess);
+
+                                // Kill each process in the list
+                                foreach (Process process in processes)
+                                {
+                                    process.Kill();
+                                }
+                                Program.MenuHandlerInvoke();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Continuing server operation...");
+                            }
+                        }
+                    }
+
                 }
+
             });
 
             serverThread.Start();
