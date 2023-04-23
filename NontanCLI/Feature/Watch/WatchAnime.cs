@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Text;
 using NontanCLI.Utils;
+using System.Threading.Tasks.Sources;
 
 namespace NontanCLI.Feature.Watch
 {
@@ -23,7 +24,7 @@ namespace NontanCLI.Feature.Watch
 
 
         private static string m3u8_url;
-        private static string vtt_url;
+        private static string vtt_url = "https://cc.zorores.com/2f/86/2f86d3166c0174b7030ee8f9a3b148d6/eng-2.vtt";
 
         // Default port for the server
         
@@ -58,6 +59,16 @@ namespace NontanCLI.Feature.Watch
 
             List<string> quality_selection = new List<string>();
 
+            if (response == null)
+            {
+
+                AnsiConsole.MarkupLine("[red]Something wrong, i can feet it [/]");
+
+                Thread.Sleep(2000);
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+            }
 
             foreach (var item in response.sources)
             {
@@ -65,9 +76,6 @@ namespace NontanCLI.Feature.Watch
             }
 
             quality_selection.Add("Back");
-
-            
-            
 
             var _prompt = AnsiConsole.Prompt(
                 new SelectionPrompt<string>()
@@ -83,9 +91,9 @@ namespace NontanCLI.Feature.Watch
             else
             {
 
-                foreach (var item in response.sources)
+                for (int i = 0; i < response.sources.Count; i++)
                 {
-                    if (item.quality.ToString() == _prompt)
+                    if (response.sources[i].quality.ToString() == _prompt)
                     {
                         var _selected_player = AnsiConsole.Prompt(
                             new SelectionPrompt<string>()
@@ -96,19 +104,45 @@ namespace NontanCLI.Feature.Watch
 
                         if (_selected_player == "VLC")
                         {
-                            PlayOnVLC(item.url.ToString());
+                            PlayOnVLC(response.sources[i].url.ToString());
                         }
                         else if (_selected_player == "Browser")
                         {
-                            PlayOnBrowser(item.url.ToString());
+                            if (response.subtitles != null)
+                            {
+                                List<string> subtitles = new List<string>();
+                                foreach (var item in response.subtitles)
+                                {
+                                    subtitles.Add(item.lang.ToString());
+                                }
+                                var _selectted_subtitles = AnsiConsole.Prompt(
+                                    new SelectionPrompt<string>()
+                                        .Title("\n[green]Select Subtitle available[/]?")
+                                        .PageSize(10)
+                                        .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
+                                        .AddChoices(subtitles.ToArray()));
+
+                                foreach (var sub in response.subtitles)
+                                {
+                                    if (_selectted_subtitles == sub.lang.ToString())
+                                    {
+                                        vtt_url = sub.url.ToString();
+                                    }
+                                }
+                            } else
+                            {
+                                vtt_url = "";
+                            }
+                            PlayOnBrowser(response.sources[i].url.ToString());
+
                         }
                         else
                         {
-                            PlayOnBrowser(item.url.ToString());
+                            PlayOnBrowser(response.sources[i].url.ToString());
                         }
-
                     }
                 }
+
             }
         }
 
@@ -126,7 +160,12 @@ namespace NontanCLI.Feature.Watch
             }
 
 
-            Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+            //Process.Start(CURRENT_DIR + "\\vlc\\vlc.exe", url);
+
+            Process vlcProcess = new Process();
+            vlcProcess.StartInfo.FileName = CURRENT_DIR + "\\vlc\\vlc.exe";
+            vlcProcess.StartInfo.Arguments = $"{url} --sub-file={vtt_url}";
+            vlcProcess.Start();
 
             Thread.Sleep(5000);
             while (true)
@@ -169,7 +208,7 @@ namespace NontanCLI.Feature.Watch
 
                 while (true)
                 {
-                    if (Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.Q)
+                    if (Console.ReadKey(true).Key == ConsoleKey.Q)
                     {
                         if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
                         {
@@ -206,6 +245,13 @@ namespace NontanCLI.Feature.Watch
                     {
                         // Redirect to the online m3u8 URL
                         resp.Redirect(m3u8_url);
+                        resp.OutputStream.Close();
+
+                    } else if (requestUrl == "/hls/subtitle.vtt")
+                    {
+
+                        // Redirect to the online m3u8 URL
+                        resp.Redirect(vtt_url);
                         resp.OutputStream.Close();
                     }
                     else
