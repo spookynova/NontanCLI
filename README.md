@@ -46,7 +46,7 @@
    <li>Click on the "Environment Variables" button at the bottom of the window</li>
    <li>In the "User variables" section, check if there is a variable named "Path". If not, click the "New" button to create a new variable and enter "Path" as the name.</li>
    <li>Click the "Edit" button to modify the "Path" variable.</li>
-   <li>Click the "New" button and enter the path to the NontanCLI directory, which is typically "C:/Program Files/NontanCLI". Make sure to separate the new path from the existing paths with a semicolon (;).</li>
+   <li>Click the "New" button and enter the path to the NontanCLI directory, which is typically "C:/NontanCLI". Make sure to separate the new path from the existing paths with a semicolon (;).</li>
    <li>Click "OK" to close all the windows.
 </li>
 </ul>
