@@ -23,12 +23,11 @@ namespace NontanCLI.Feature.Watch
         private static WatchRoot response;
 
 
-        private static string m3u8_url;
-        private static string vtt_url = "https://cc.zorores.com/2f/86/2f86d3166c0174b7030ee8f9a3b148d6/eng-2.vtt";
+        private static string vtt_url;
 
         // Default port for the server
         
-        private static string playerFilePath = @"extension/player/index.html";
+        private static string playerFilePath = @"Plyr/index.html";
 
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)
@@ -64,7 +63,7 @@ namespace NontanCLI.Feature.Watch
 
                 AnsiConsole.MarkupLine("[red]Something wrong, i can feet it [/]");
 
-                Thread.Sleep(2000);
+                Thread.Sleep(10000);
                 AnsiConsole.Clear();
                 Program.MenuHandlerInvoke();
                 return;
@@ -133,16 +132,15 @@ namespace NontanCLI.Feature.Watch
                             {
                                 vtt_url = "";
                             }
-                            PlayOnBrowser(response.sources[i].url.ToString());
+                            PlayOnBrowser(response.sources[i].url.ToString(),vtt_url);
 
                         }
                         else
                         {
-                            PlayOnBrowser(response.sources[i].url.ToString());
+                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url);
                         }
                     }
                 }
-
             }
         }
 
@@ -180,7 +178,7 @@ namespace NontanCLI.Feature.Watch
         }
 
         [Obsolete]
-        private void PlayOnBrowser(string url)
+        private void PlayOnBrowser(string url, string sub_url)
         {
 
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
@@ -192,9 +190,22 @@ namespace NontanCLI.Feature.Watch
                 return;
             }
 
-            // Bypass CORS
 
-            m3u8_url = Constant.CORS + url;
+
+            if (!File.Exists(CURRENT_DIR + @"M3U8Proxy/M3U8Proxy.exe"))
+            {
+                AnsiConsole.MarkupLine("[bold red]Proxy Is Missing !![/]");
+                Console.ReadKey();
+                return;
+            }
+
+
+            Process vlcProcess = new Process();
+            vlcProcess.StartInfo.FileName = CURRENT_DIR + "\\M3U8Proxy\\M3U8Proxy";
+            vlcProcess.Start();
+
+            Thread.Sleep(2000);
+            // Bypass CORS
             Thread serverThread = new Thread(() =>
             {
                 
@@ -206,25 +217,8 @@ namespace NontanCLI.Feature.Watch
                 AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");
                 AnsiConsole.MarkupLine("Press [green] Q [/] to stop the server..");
 
-                while (true)
+                while (listener.IsListening)
                 {
-                    if (Console.ReadKey(true).Key == ConsoleKey.Q)
-                    {
-                        if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
-                        {
-                            listener.Stop();
-                            Console.Clear();
-                            Console.WriteLine("Server stopped.");
-                            Program.MenuHandlerInvoke();
-                            break;
-                        }
-                        else
-                        {
-                            Console.WriteLine("Continuing server operation...");
-                        }
-                    }
-
-
                     HttpListenerContext ctx = listener.GetContext();
                     HttpListenerRequest request = ctx.Request;
                     HttpListenerResponse resp = ctx.Response;
@@ -241,18 +235,20 @@ namespace NontanCLI.Feature.Watch
                         resp.OutputStream.Write(buffer, 0, buffer.Length);
                         resp.OutputStream.Close();
                     }
-                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html , ( extension > player > index.html )
+                    else if (requestUrl == "/hls/source.m3u8") // if you change this, you must change it too on player html 
                     {
                         // Redirect to the online m3u8 URL
-                        resp.Redirect(m3u8_url);
+                        resp.Redirect(Constant.baseProxyAddress + url);
                         resp.OutputStream.Close();
 
-                    } else if (requestUrl == "/hls/subtitle.vtt")
+                    }   
+                    else if (requestUrl == "/hls/subtitle") // if you change this, you must change it too on player html
                     {
-
                         // Redirect to the online m3u8 URL
-                        resp.Redirect(vtt_url);
+                        Console.Write(sub_url);
+                        resp.Redirect(sub_url);    
                         resp.OutputStream.Close();
+
                     }
                     else
                     {
@@ -260,7 +256,40 @@ namespace NontanCLI.Feature.Watch
                         resp.StatusCode = 404;
                         resp.OutputStream.Close();
                     }
+
+                    if (Console.KeyAvailable)
+                    {
+                        ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
+
+                        if (keyInfo.Key == ConsoleKey.Q)
+                        {
+                            if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
+                            {
+                                listener.Stop();
+                                Console.Clear();
+                                Console.WriteLine("Server stopped.");
+                                string proxyProcess = "M3U8Proxy"; // Specify the process name to kill
+
+                                // Get all running processes with the specified process name
+                                Process[] processes = Process.GetProcessesByName(proxyProcess);
+
+                                // Kill each process in the list
+                                foreach (Process process in processes)
+                                {
+                                    process.Kill();
+                                }
+                                Program.MenuHandlerInvoke();
+                                break;
+                            }
+                            else
+                            {
+                                Console.WriteLine("Continuing server operation...");
+                            }
+                        }
+                    }
+
                 }
+
             });
 
             serverThread.Start();
