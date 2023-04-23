@@ -20,7 +20,7 @@ namespace NontanCLI.Utils
         public static string provider = "";
 
         
-        public void InitConfig()
+        public static void InitConfig()
         {
             // Check if config.json file exists
             if (File.Exists(ConfigPath))
