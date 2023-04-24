@@ -19,11 +19,11 @@ namespace NontanCLI.Feature.Watch
     public class WatchAnime
     {
 
-        private RestResponse req;
-        private static WatchRoot response;
+        private RestResponse? req;
+        private static WatchRoot? response;
 
 
-        private static string vtt_url;
+        private static string? vtt_url;
 
         // Default port for the server
         
@@ -32,9 +32,6 @@ namespace NontanCLI.Feature.Watch
         [Obsolete]
         public void WatchAnimeInvoke(string episode_id)
         {
-
-    
-
             try
             {
                 string Query = "";
@@ -47,7 +44,7 @@ namespace NontanCLI.Feature.Watch
                 }
 
                 req = RestSharpHelper.GetResponse(Query);
-                response = JsonConvert.DeserializeObject<WatchRoot>(req.Content);
+                response = JsonConvert.DeserializeObject<WatchRoot>(req.Content!);
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -63,7 +60,7 @@ namespace NontanCLI.Feature.Watch
 
                 AnsiConsole.MarkupLine("[red]Something wrong, i can feet it [/]");
 
-                Thread.Sleep(10000);
+                Thread.Sleep(5000);
                 AnsiConsole.Clear();
                 Program.MenuHandlerInvoke();
                 return;
@@ -132,12 +129,12 @@ namespace NontanCLI.Feature.Watch
                             {
                                 vtt_url = "";
                             }
-                            PlayOnBrowser(response.sources[i].url.ToString(),vtt_url);
+                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
 
                         }
                         else
                         {
-                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url);
+                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
                         }
                     }
                 }
@@ -215,7 +212,6 @@ namespace NontanCLI.Feature.Watch
                 listener.Prefixes.Add(Constant.baseAddress);
                 listener.Start();
                 AnsiConsole.MarkupLine($"Server started at [green]{Constant.baseAddress}.[/] Listening for requests...");
-                AnsiConsole.MarkupLine("Press [green] Q [/] to stop the server..");
 
                 while (listener.IsListening)
                 {
@@ -223,7 +219,7 @@ namespace NontanCLI.Feature.Watch
                     HttpListenerRequest request = ctx.Request;
                     HttpListenerResponse resp = ctx.Response;
 
-                    string requestUrl = request.Url.AbsolutePath;
+                    string requestUrl = request.Url!.AbsolutePath;
 
                     if (requestUrl == "/")
                     {
@@ -245,7 +241,6 @@ namespace NontanCLI.Feature.Watch
                     else if (requestUrl == "/hls/subtitle") // if you change this, you must change it too on player html
                     {
                         // Redirect to the online m3u8 URL
-                        Console.Write(sub_url);
                         resp.Redirect(sub_url);    
                         resp.OutputStream.Close();
 
@@ -256,38 +251,6 @@ namespace NontanCLI.Feature.Watch
                         resp.StatusCode = 404;
                         resp.OutputStream.Close();
                     }
-
-                    if (Console.KeyAvailable)
-                    {
-                        ConsoleKeyInfo keyInfo = Console.ReadKey(intercept: true);
-
-                        if (keyInfo.Key == ConsoleKey.Q)
-                        {
-                            if (AnsiConsole.Confirm("Are you sure you want to exit the server?"))
-                            {
-                                listener.Stop();
-                                Console.Clear();
-                                Console.WriteLine("Server stopped.");
-                                string proxyProcess = "M3U8Proxy"; // Specify the process name to kill
-
-                                // Get all running processes with the specified process name
-                                Process[] processes = Process.GetProcessesByName(proxyProcess);
-
-                                // Kill each process in the list
-                                foreach (Process process in processes)
-                                {
-                                    process.Kill();
-                                }
-                                Program.MenuHandlerInvoke();
-                                break;
-                            }
-                            else
-                            {
-                                Console.WriteLine("Continuing server operation...");
-                            }
-                        }
-                    }
-
                 }
 
             });
@@ -295,7 +258,14 @@ namespace NontanCLI.Feature.Watch
             serverThread.Start();
 
             // Open the HTML file in the default web browser
-            Process.Start(Constant.baseAddress);
+
+            ProcessStartInfo psi = new ProcessStartInfo
+            {
+                FileName = Constant.baseAddress,
+                UseShellExecute = true
+            };
+
+            Process.Start(psi);
 
             // Wait for the server thread to exit
             serverThread.Join();

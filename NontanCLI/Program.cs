@@ -1,32 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
-using NontanCLI.API;
-using NontanCLI.Feature.Search;
+﻿// See https://aka.ms/new-console-template for more information
+using Newtonsoft.Json;
 using NontanCLI.Feature;
-using Spectre.Console;
-using NontanCLI.Feature.Watch;
+using NontanCLI.Feature.DownloadManager;
 using NontanCLI.Feature.Popular;
+using NontanCLI.Feature.Recent;
+using NontanCLI.Feature.Search;
 using NontanCLI.Feature.Trending;
 using NontanCLI.Feature.UpdateManager;
-using NontanCLI.Feature.DownloadManager;
-using System.Windows.Forms;
-using System.Net.Http;
-using System.Security.Policy;
-using System.Diagnostics;
-using System.Threading;
-using System.Net;
-using RestSharp;
-using Newtonsoft.Json;
+using NontanCLI.Feature.Watch;
 using NontanCLI.Models;
-using Ionic.Zip;
 using NontanCLI.Utils;
-using NontanCLI.Feature.Recent;
-using System.Configuration;
 
+using RestSharp;
+using Spectre.Console;
+using SevenZipExtractor;
 namespace NontanCLI
 {
     public class Program
@@ -42,12 +29,13 @@ namespace NontanCLI
 
             UpdatesRoot response;
 
-            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(),"vlc")+ "/vlc.exe"))
+            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "vlc") + "/vlc.exe"))
             {
                 if (!AnsiConsole.Confirm("vlc is missing, you must have vlc to use this tool, download VLC ?"))
                 {
                     Environment.Exit(0);
-                } else
+                }
+                else
                 {
                     try
                     {
@@ -56,17 +44,14 @@ namespace NontanCLI
 
                         RestResponse req = client.Execute(request);
 
-                        response = JsonConvert.DeserializeObject<UpdatesRoot>(req.Content);
+                        response = JsonConvert.DeserializeObject<UpdatesRoot>(req.Content!)!;
 
                         if (response != null)
                         {
                             new DownloadManager().Download(response.whats_new[0].vlc_download_url);
-                            using (ZipFile zip = ZipFile.Read(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url)))
+                            using (ArchiveFile archiveFile = new ArchiveFile(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url)))
                             {
-                                foreach (ZipEntry z in zip)
-                                {
-                                    z.Extract(Directory.GetCurrentDirectory(), ExtractExistingFileAction.OverwriteSilently);
-                                }
+                                archiveFile.Extract(Directory.GetCurrentDirectory());
                             }
 
                             // check if unzip is success
@@ -97,12 +82,12 @@ namespace NontanCLI
                         Console.WriteLine(e.Message);
                     }
                 }
-                
+
             }
 
             new UpdateManager().UpdateManagerInvoke();
 
-            
+
 
             if (args.Length > 0)
             {
@@ -181,13 +166,13 @@ namespace NontanCLI
                         .Title("[green]Select available menu[/]?")
                         .PageSize(10)
                         .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
-                        .AddChoices("Search By Genres", "Search By Query","Back"));
+                        .AddChoices("Search By Genres", "Search By Query", "Back"));
 
                     switch (_search_by)
                     {
                         case "Search By Genres":
-                            
-                            Genres:
+
+                        Genres:
                             List<string> genres = new List<string>();
                             var _selected_genres = AnsiConsole.Prompt(
                                 new MultiSelectionPrompt<string>()
@@ -220,7 +205,7 @@ namespace NontanCLI
                             {
                                 genres.Add(_selected_genres[i]);
                             }
-                            
+
                             AnsiConsole.MarkupLine("You selected: [green]{0}[/]", string.Join(", ", genres));
                             new SearchAnime().AdvanceSearchByGenresInvoke(genres);
                             break;
@@ -244,7 +229,7 @@ namespace NontanCLI
 
                     Console.ReadLine();
                     break;
-                
+
                 case "Exit":
                     exit();
                     Console.Clear();

@@ -20,7 +20,7 @@ namespace NontanCLI.API
         // create a new method to get the response
         public static RestResponse GetResponse(string endpoint)
         {
-            RestResponse response = null;
+            RestResponse? response = null;
             AnsiConsole.Status()
                 .Start("Fetching Server...", ctx =>
                 {
