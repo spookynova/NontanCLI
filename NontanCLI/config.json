@@ -1,0 +1,5 @@
+{
+  "port": "8000",
+  "proxy_port": "5001",
+  "provider": "zoro"
+}

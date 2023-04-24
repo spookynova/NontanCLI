@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using NontanCLI.Models;
+using NontanCLI.Feature.DownloadManager;
 using RestSharp;
 using System.Diagnostics;
 using System.Threading;
@@ -12,6 +13,7 @@ using System.Net;
 using System.Text;
 using NontanCLI.Utils;
 using System.Threading.Tasks.Sources;
+using SevenZipExtractor;
 
 namespace NontanCLI.Feature.Watch
 {
@@ -145,11 +147,71 @@ namespace NontanCLI.Feature.Watch
         private void PlayOnVLC(string url)
         {
 
+
+            VLC:
+
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
 
             if (!File.Exists(CURRENT_DIR + "\\vlc\\vlc.exe"))
             {
                 AnsiConsole.MarkupLine("[bold red]Cannot play with VLC, VLC is missing !![/]");
+                UpdatesRoot response;
+                if (!AnsiConsole.Confirm("vlc is missing, do you want to download it?"))
+                {
+                    Console.Clear();
+                    Program.MenuHandlerInvoke();
+                    return;
+                }
+                else
+                {
+                    try
+                    {
+                        var client = new RestClient("https://raw.githubusercontent.com/");
+                        var request = new RestRequest("evnx32/NontanCLI/main/updates.json", Method.Get);
+
+                        RestResponse req = client.Execute(request);
+
+                        response = JsonConvert.DeserializeObject<UpdatesRoot>(req.Content!)!;
+
+                        if (response != null)
+                        {
+
+                            new DownloadManager.DownloadManager().Download(response.whats_new[0].vlc_download_url);
+                            using (ArchiveFile archiveFile = new ArchiveFile(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url)))
+                            {
+                                archiveFile.Extract(Directory.GetCurrentDirectory());
+                            }
+
+                            // check if unzip is success
+                            Thread.Sleep(3000);
+
+                            if (File.Exists(Directory.GetCurrentDirectory() + "/vlc/vlc.exe"))
+                            {
+                                AnsiConsole.MarkupLine("[green]Downloaded and extracted successfully[/]");
+
+                                // Delete File 
+
+                                File.Delete(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url));
+
+                                Thread.Sleep(3000);
+                                Console.Clear();
+                                goto VLC;
+                            }
+                            else
+                            {
+                                AnsiConsole.MarkupLine("[red]Downloaded successfully but failed to extract.[/]");
+                                Thread.Sleep(5000);
+                                Environment.Exit(0);
+                            }
+                        }
+
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                }
+
                 Console.ReadKey();
                 return;
             }
@@ -180,7 +242,7 @@ namespace NontanCLI.Feature.Watch
 
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
 
-            if (!File.Exists(CURRENT_DIR + playerFilePath))
+/*            if (!File.Exists(CURRENT_DIR + playerFilePath))
             {
                 AnsiConsole.MarkupLine("[bold red]Cannot play with Browser, Player is missing !![/]");
                 Console.ReadKey();
@@ -199,7 +261,10 @@ namespace NontanCLI.Feature.Watch
 
             Process vlcProcess = new Process();
             vlcProcess.StartInfo.FileName = CURRENT_DIR + "\\M3U8Proxy\\M3U8Proxy";
-            vlcProcess.Start();
+            vlcProcess.Start();*/
+
+
+
 
             Thread.Sleep(2000);
             // Bypass CORS
@@ -258,14 +323,8 @@ namespace NontanCLI.Feature.Watch
             serverThread.Start();
 
             // Open the HTML file in the default web browser
+            M3U8Helper.Start();
 
-            ProcessStartInfo psi = new ProcessStartInfo
-            {
-                FileName = Constant.baseAddress,
-                UseShellExecute = true
-            };
-
-            Process.Start(psi);
 
             // Wait for the server thread to exit
             serverThread.Join();

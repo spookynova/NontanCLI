@@ -1,15 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net7.0</TargetFramework>
     <Nullable>enable</Nullable>
-    <Copyright>Copyright 2023</Copyright>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Authors>evnx32</Authors>
+    <VersionPrefix>1.0.3.0</VersionPrefix>
+    <VersionSuffix>beta</VersionSuffix>
+    <Description>Simple Anime Scrapper and Streaming</Description>
     <PackageProjectUrl>https://github.com/evnx32/NontanCLI</PackageProjectUrl>
-    <RepositoryUrl>https://github.com/evnx32/NontanCLI</RepositoryUrl>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
-    <Description>Simple anime scrapper</Description>
+    
   </PropertyGroup>
 
   <ItemGroup>
@@ -17,10 +18,17 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="AspNetCore.Proxy" Version="4.4.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="protobuf-net" Version="3.2.16" />
     <PackageReference Include="RestSharp" Version="110.2.0" />
     <PackageReference Include="SevenZipExtractor" Version="1.0.17" />
     <PackageReference Include="Spectre.Console" Version="0.46.0" />
+    <PackageReference Include="StackExchange.Redis" Version="2.6.96" />
   </ItemGroup>
+
+  <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
+    <Exec Command="mkdir $(ProjectDir)$(OutDir)Plyr&#xD;&#xA;copy $(ProjectDir)Plyr\* $(ProjectDir)$(OutDir)Plyr\" />
+  </Target>
 
 </Project>
