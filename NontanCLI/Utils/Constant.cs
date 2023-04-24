@@ -49,7 +49,7 @@ namespace NontanCLI.Utils
                 PROXY_PORT = "5001";
                 baseAddress = "http://localhost:" + PORT + "/";
                 baseProxyAddress = "http://localhost:" + PROXY_PORT + "/";
-                provider = "gogoanime";
+                provider = "zoro";
                 string configFileContent = JsonConvert.SerializeObject(config, Formatting.Indented);
                 File.WriteAllText(ConfigPath, configFileContent);
                 Console.WriteLine("config.json file created with default values.");

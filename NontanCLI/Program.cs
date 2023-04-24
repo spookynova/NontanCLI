@@ -10,7 +10,6 @@ using NontanCLI.Feature.UpdateManager;
 using NontanCLI.Feature.Watch;
 using NontanCLI.Models;
 using NontanCLI.Utils;
-
 using RestSharp;
 using Spectre.Console;
 using SevenZipExtractor;
@@ -27,67 +26,7 @@ namespace NontanCLI
         static void Main(string[] args)
         {
 
-            UpdatesRoot response;
-
-            if (!File.Exists(Path.Combine(Directory.GetCurrentDirectory(), "vlc") + "/vlc.exe"))
-            {
-                if (!AnsiConsole.Confirm("vlc is missing, you must have vlc to use this tool, download VLC ?"))
-                {
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    try
-                    {
-                        var client = new RestClient("https://raw.githubusercontent.com/");
-                        var request = new RestRequest("evnx32/NontanCLI/main/updates.json", Method.Get);
-
-                        RestResponse req = client.Execute(request);
-
-                        response = JsonConvert.DeserializeObject<UpdatesRoot>(req.Content!)!;
-
-                        if (response != null)
-                        {
-                            new DownloadManager().Download(response.whats_new[0].vlc_download_url);
-                            using (ArchiveFile archiveFile = new ArchiveFile(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url)))
-                            {
-                                archiveFile.Extract(Directory.GetCurrentDirectory());
-                            }
-
-                            // check if unzip is success
-                            Thread.Sleep(3000);
-
-                            if (File.Exists(Directory.GetCurrentDirectory() + "/vlc/vlc.exe"))
-                            {
-                                AnsiConsole.MarkupLine("[green]Downloaded and extracted successfully[/]");
-
-                                // Delete File 
-
-                                File.Delete(Directory.GetCurrentDirectory() + "/" + Path.GetFileName(response.whats_new[0].vlc_download_url));
-
-                                Thread.Sleep(3000);
-                                Console.Clear();
-                            }
-                            else
-                            {
-                                AnsiConsole.MarkupLine("[red]Downloaded successfully but failed to extract.[/]");
-                                Thread.Sleep(5000);
-                                Environment.Exit(0);
-                            }
-                        }
-
-                    }
-                    catch (Exception e)
-                    {
-                        Console.WriteLine(e.Message);
-                    }
-                }
-
-            }
-
             new UpdateManager().UpdateManagerInvoke();
-
-
 
             if (args.Length > 0)
             {
