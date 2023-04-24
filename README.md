@@ -29,6 +29,28 @@
   <li>User Friendly</li>
   <li>etc (idk how to explain more)</li>
 </ul>
+
+<h2 id="requirements-for-ready-to-use-build">Requirements for Ready-to-use build</h2>
+<ul>
+<li>.NET Core 7</li>
+<li>.NET Runtime Desktop</li>
+<li>OS: <strong>Windows 10 1809 Update (build 17763)</strong> or later / <strong>Windows 11 (Any builds)</strong></li>
+<li>Internet Access: <strong>Yes</strong></li>
+</ul>
+<h2 id="building-locally-development">Building Locally/Development</h2>
+<p>To use NontanCLI, follow these steps:</p>
+<ol>
+<li>Install .NET Core 7 on your machine.</li>
+<li>Clone the NontanCLI repository from GitHub.</li>
+<li>Open the solution in Visual Studio 2022.</li>
+<li>Build the solution to generate the NontanCLI executable.</li>
+<li>Open a command prompt or terminal window.</li>
+<li>Navigate to the directory where the NontanCLI executable is located.</li>
+<li>Execute NontanCLI commands as needed.</li>
+</ol>
+
+
+
 <h2 id="installation">Installation</h2>
 <ul>
   <li>Download Latest Version of NontanCLI from Release Page</li>
@@ -99,11 +121,14 @@
 <details>
   <summary>Click to expand dependencies</summary>
   <h2 id="dependencies">Dependencies</h2>
-  <h3 id="-newtonsoft-json-13-0-3-https-www-newtonsoft-com-json-"><a
-      href="https://www.newtonsoft.com/json">Newtonsoft.Json (13.0.3)</a></h3>
-  <h4 id="declared-licenses">Declared Licenses</h4>
-  <p>MIT</p>
-  <pre><code>The MIT License (MIT)
+<h3 id="-aspnetcore-proxy-4-4-0-https-github-com-twitchax-aspnetcore-proxy-"><a href="https://github.com/twitchax/aspnetcore.proxy">AspNetCore.Proxy (4.4.0)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-newtonsoft-json-13-0-3-https-www-newtonsoft-com-json-"><a href="https://www.newtonsoft.com/json">Newtonsoft.Json (13.0.3)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<p>MIT</p>
+<pre><code>The MIT License (MIT)
 
 Copyright (c) 2007 James Newton-King
 
@@ -123,13 +148,30 @@ IMPLIED, <span class="hljs-keyword">INCLUDING</span> BUT <span class="hljs-keywo
 COPYRIGHT HOLDERS BE LIABLE <span class="hljs-keyword">FOR</span> <span class="hljs-keyword">ANY</span> CLAIM, DAMAGES <span class="hljs-keyword">OR</span> OTHER LIABILITY, WHETHER
 <span class="hljs-keyword">IN</span> AN <span class="hljs-keyword">ACTION</span> <span class="hljs-keyword">OF</span> CONTRACT, TORT <span class="hljs-keyword">OR</span> OTHERWISE, ARISING <span class="hljs-keyword">FROM</span>, <span class="hljs-keyword">OUT</span> <span class="hljs-keyword">OF</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">IN</span>
 <span class="hljs-keyword">CONNECTION</span> <span class="hljs-keyword">WITH</span> THE SOFTWARE <span class="hljs-keyword">OR</span> THE <span class="hljs-keyword">USE</span> <span class="hljs-keyword">OR</span> OTHER DEALINGS <span class="hljs-keyword">IN</span> THE SOFTWARE.
-</code></pre>
-  <h4 id="other-licenses">Other Licenses</h4>
-  <hr>
-  <h3 id="-restsharp-110-2-0-https-restsharp-dev-"><a href="https://restsharp.dev/">RestSharp (110.2.0)</a></h3>
-  <h4 id="declared-licenses">Declared Licenses</h4>
-  <p>Apache-2.0</p>
-  <pre><code>Copyright 2023, RestSharp Contributors
+</code></pre><h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-protobuf-net-3-2-16-https-github-com-protobuf-net-protobuf-net-"><a href="https://github.com/protobuf-net/protobuf-net">protobuf-net (3.2.16)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<p>Apache-2.0</p>
+<pre><code>Copyright  See https://github.com/protobuf-net/protobuf-net&lt;/copyright&gt;
+
+Licensed under the Apache License, Version <span class="hljs-number">2.0</span> (the <span class="hljs-string">"License"</span>);
+you may <span class="hljs-keyword">not</span> <span class="hljs-keyword">use</span> this <span class="hljs-keyword">file</span> except <span class="hljs-keyword">in</span> compliance <span class="hljs-keyword">with</span> the License.
+You may obtain a copy <span class="hljs-keyword">of</span> the License at
+
+http://www.apache.org/licenses/LICENSE-<span class="hljs-number">2.0</span>
+
+Unless required by applicable law <span class="hljs-keyword">or</span> agreed <span class="hljs-keyword">to</span> <span class="hljs-keyword">in</span> writing, software
+distributed under the License <span class="hljs-keyword">is</span> distributed <span class="hljs-keyword">on</span> an <span class="hljs-string">"AS IS"</span> BASIS,
+WITHOUT WARRANTIES <span class="hljs-keyword">OR</span> CONDITIONS <span class="hljs-keyword">OF</span> ANY KIND, either express <span class="hljs-keyword">or</span> implied.
+
+See the License <span class="hljs-keyword">for</span> the specific language governing permissions <span class="hljs-keyword">and</span> limitations under the License.
+</code></pre><h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-restsharp-110-2-0-https-restsharp-dev-"><a href="https://restsharp.dev/">RestSharp (110.2.0)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<p>Apache-2.0</p>
+<pre><code>Copyright 2023, RestSharp Contributors
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not <span class="hljs-keyword">use</span> this <span class="hljs-keyword">file</span> <span class="hljs-keyword">except</span> <span class="hljs-keyword">in</span> compliance <span class="hljs-keyword">with</span> the License.
@@ -142,19 +184,16 @@ Unless <span class="hljs-keyword">required</span> <span class="hljs-keyword">by<
 <span class="hljs-keyword">WITHOUT</span> WARRANTIES <span class="hljs-keyword">OR</span> CONDITIONS <span class="hljs-keyword">OF</span> <span class="hljs-keyword">ANY</span> KIND, either express <span class="hljs-keyword">or</span> implied.
 
 See the License <span class="hljs-keyword">for</span> the specific <span class="hljs-keyword">language</span> governing permissions <span class="hljs-keyword">and</span> limitations <span class="hljs-keyword">under</span> the License.
-</code></pre>
-  <h4 id="other-licenses">Other Licenses</h4>
-  <hr>
-  <h3 id="-sevenzipextractor-1-0-17-https-github-com-adoconnection-sevenzipextractor-"><a
-      href="https://github.com/adoconnection/SevenZipExtractor">SevenZipExtractor (1.0.17)</a></h3>
-  <h4 id="declared-licenses">Declared Licenses</h4>
-  <h4 id="other-licenses">Other Licenses</h4>
-  <hr>
-  <h3 id="-spectre-console-0-46-0-https-github-com-spectreconsole-spectre-console-"><a
-      href="https://github.com/spectreconsole/spectre.console">Spectre.Console (0.46.0)</a></h3>
-  <h4 id="declared-licenses">Declared Licenses</h4>
-  <p>MIT</p>
-  <pre><code>Copyright (c)  Patrik Svensson, Phil Scott, Nils Andresen&lt;/copyright&gt;
+</code></pre><h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-sevenzipextractor-1-0-17-https-github-com-adoconnection-sevenzipextractor-"><a href="https://github.com/adoconnection/SevenZipExtractor">SevenZipExtractor (1.0.17)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-spectre-console-0-46-0-https-github-com-spectreconsole-spectre-console-"><a href="https://github.com/spectreconsole/spectre.console">Spectre.Console (0.46.0)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<p>MIT</p>
+<pre><code>Copyright (c)  Patrik Svensson, Phil Scott, Nils Andresen&lt;/copyright&gt;
 Permission <span class="hljs-keyword">is</span> hereby granted, free <span class="hljs-keyword">of</span> charge, <span class="hljs-keyword">to</span> any person obtaining a copy
 <span class="hljs-keyword">of</span> this software <span class="hljs-keyword">and</span> associated documentation files (the <span class="hljs-string">"Software"</span>), <span class="hljs-keyword">to</span> deal
 <span class="hljs-keyword">in</span> the Software without restriction, including without limitation the rights
@@ -172,9 +211,32 @@ AUTHORS <span class="hljs-keyword">OR</span> COPYRIGHT HOLDERS BE LIABLE <span c
 LIABILITY, WHETHER <span class="hljs-keyword">IN</span> AN ACTION <span class="hljs-keyword">OF</span> CONTRACT, TORT <span class="hljs-keyword">OR</span> OTHERWISE, ARISING FROM,
 <span class="hljs-keyword">OUT</span> <span class="hljs-keyword">OF</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">IN</span> CONNECTION <span class="hljs-keyword">WITH</span> THE SOFTWARE <span class="hljs-keyword">OR</span> THE <span class="hljs-keyword">USE</span> <span class="hljs-keyword">OR</span> OTHER DEALINGS <span class="hljs-keyword">IN</span> THE
 SOFTWARE.
-</code></pre>
-  <h4 id="other-licenses">Other Licenses</h4>
-  <hr>
+</code></pre><h4 id="other-licenses">Other Licenses</h4>
+<hr>
+<h3 id="-stackexchange-redis-2-6-96-https-stackexchange-github-io-stackexchange-redis-"><a href="https://stackexchange.github.io/StackExchange.Redis/">StackExchange.Redis (2.6.96)</a></h3>
+<h4 id="declared-licenses">Declared Licenses</h4>
+<p>MIT</p>
+<pre><code>Copyright (c) <span class="hljs-number">2014</span> - <span class="hljs-number">2023</span> Stack Exchange, Inc.&lt;/copyright&gt;
+Permission <span class="hljs-keyword">is</span> hereby granted, free <span class="hljs-keyword">of</span> charge, <span class="hljs-keyword">to</span> any person obtaining a copy
+<span class="hljs-keyword">of</span> this software <span class="hljs-keyword">and</span> associated documentation files (the <span class="hljs-string">"Software"</span>), <span class="hljs-keyword">to</span> deal
+<span class="hljs-keyword">in</span> the Software without restriction, including without limitation the rights
+<span class="hljs-keyword">to</span> <span class="hljs-keyword">use</span>, copy, modify, merge, publish, distribute, sublicense, <span class="hljs-keyword">and</span>/<span class="hljs-keyword">or</span> sell
+copies <span class="hljs-keyword">of</span> the Software, <span class="hljs-keyword">and</span> <span class="hljs-keyword">to</span> permit persons <span class="hljs-keyword">to</span> whom the Software <span class="hljs-keyword">is</span>
+furnished <span class="hljs-keyword">to</span> do so, subject <span class="hljs-keyword">to</span> the following conditions:
+
+The above copyright notice <span class="hljs-keyword">and</span> this permission notice shall be included <span class="hljs-keyword">in</span> <span class="hljs-keyword">all</span>
+copies <span class="hljs-keyword">or</span> substantial portions <span class="hljs-keyword">of</span> the Software.
+
+THE SOFTWARE <span class="hljs-keyword">IS</span> PROVIDED <span class="hljs-string">"AS IS"</span>, WITHOUT WARRANTY <span class="hljs-keyword">OF</span> ANY KIND, EXPRESS <span class="hljs-keyword">OR</span>
+IMPLIED, INCLUDING BUT <span class="hljs-keyword">NOT</span> LIMITED <span class="hljs-keyword">TO</span> THE WARRANTIES <span class="hljs-keyword">OF</span> MERCHANTABILITY,
+FITNESS <span class="hljs-keyword">FOR</span> A PARTICULAR PURPOSE <span class="hljs-keyword">AND</span> NONINFRINGEMENT. <span class="hljs-keyword">IN</span> NO EVENT SHALL THE
+AUTHORS <span class="hljs-keyword">OR</span> COPYRIGHT HOLDERS BE LIABLE <span class="hljs-keyword">FOR</span> ANY CLAIM, DAMAGES <span class="hljs-keyword">OR</span> OTHER
+LIABILITY, WHETHER <span class="hljs-keyword">IN</span> AN ACTION <span class="hljs-keyword">OF</span> CONTRACT, TORT <span class="hljs-keyword">OR</span> OTHERWISE, ARISING FROM,
+<span class="hljs-keyword">OUT</span> <span class="hljs-keyword">OF</span> <span class="hljs-keyword">OR</span> <span class="hljs-keyword">IN</span> CONNECTION <span class="hljs-keyword">WITH</span> THE SOFTWARE <span class="hljs-keyword">OR</span> THE <span class="hljs-keyword">USE</span> <span class="hljs-keyword">OR</span> OTHER DEALINGS <span class="hljs-keyword">IN</span> THE
+SOFTWARE.
+</code></pre><h4 id="other-licenses">Other Licenses</h4>
+<hr>
+
 </details>
 
 
