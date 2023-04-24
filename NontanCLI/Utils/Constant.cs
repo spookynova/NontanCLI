@@ -12,7 +12,6 @@ namespace NontanCLI.Utils
     public class Constant
     {
         public static readonly string BaseUrl = "https://api.consumet.org/";
-        public static readonly string CORS = "https://proxy.vnxservers.com/";
 
         public static string ConfigPath = "config.json";
         public static string PORT = "";
@@ -28,7 +27,7 @@ namespace NontanCLI.Utils
             if (File.Exists(ConfigPath))
             {
                 string configJson = File.ReadAllText(ConfigPath);
-                ConfigModel config = JsonConvert.DeserializeObject<ConfigModel>(configJson);
+                ConfigModel config = JsonConvert.DeserializeObject<ConfigModel>(configJson)!;
 
                 // Access the configuration data
                 PORT = config.port;
@@ -43,7 +42,7 @@ namespace NontanCLI.Utils
                 {
                     port = "8000",
                     proxy_port = "5001",
-                    provider = "gogoanime"
+                    provider = "zoro"
                 };
 
                 PORT = "8000";

@@ -27,7 +27,7 @@ namespace NontanCLI.Feature.DownloadManager
                     Uri uri = new Uri(remoteUri);
                     
                     //delegate method, which will be called after file download has been complete.
-                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(Extract);
+                    client.DownloadFileCompleted += new AsyncCompletedEventHandler(Extract!);
                     //delegate method for progress notification handler.
                     client.DownloadProgressChanged += new DownloadProgressChangedEventHandler(ProgessChanged);
                     // uri is the remote url where filed needs to be downloaded, and FilePath is the location where file to be saved
