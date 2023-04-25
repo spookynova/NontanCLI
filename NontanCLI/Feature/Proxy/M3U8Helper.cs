@@ -2,10 +2,19 @@ using AspNetCore.Proxy;
 using Microsoft.AspNetCore.HttpOverrides;
 using System.Diagnostics;
 using NontanCLI.Utils;
+using System.Net;
 
 public class M3U8Helper {
 
     const string myAllowSpecificOrigins = "corsPolicy";
+    public static string m3u8_url = "";
+    private static string vtt_url = ""; 
+
+    public static void setMedia(string m3u8, string vtt)
+    {
+        m3u8_url = m3u8;
+        vtt_url = vtt;
+    }
 
     public static void Start()
     {
@@ -24,7 +33,7 @@ public class M3U8Helper {
         builder.Services.AddProxies();
         var allowedOrigins = builder.Configuration.GetSection("AllowedOrigins").Get<string[]>();
         if (!builder.Environment.IsDevelopment()) builder.WebHost.ConfigureKestrel(k => {
-            k.ListenAnyIP(5001); // PORT HANDLE
+            k.ListenAnyIP(int.Parse(Constant.PROXY_PORT)); // PORT HANDLE
         });
 
         builder.Services.AddCors(options =>
@@ -50,15 +59,42 @@ public class M3U8Helper {
         app.UseCors(myAllowSpecificOrigins);
         app.UseOutputCache();
         app.MapGet("/hello", async context => { await context.Response.WriteAsync("Hello, Bitches!"); });
+        app.MapGet("/player", async context =>
+        {
+            string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
+
+            var filePath = Path.Combine(CURRENT_DIR, @"Plyr/index.html"); // Replace "example.html" with the actual file name
+
+            if (File.Exists(filePath))
+            {
+                var fileContents = File.ReadAllText(filePath);
+                await context.Response.WriteAsync(fileContents);
+            }
+            else
+            {
+                context.Response.StatusCode = (int)HttpStatusCode.NotFound;
+            }
+        });
+
+
+        app.MapGet("hls/source.m3u8", async context =>
+        {
+            context.Response.Redirect(Constant.baseProxyAddress + m3u8_url);
+        });
+
+        app.MapGet("hls/subtitle",async context =>
+        {
+            context.Response.Redirect(vtt_url);
+        });
         app.UseAuthentication();
         app.MapControllers();
 
+        ProcessStartInfo processStartInfo = new ProcessStartInfo();
         ProcessStartInfo psi = new ProcessStartInfo
         {
-            FileName = Constant.baseAddress,
+            FileName = Constant.baseProxyAddress + "player",
             UseShellExecute = true
         };
-
         Process.Start(psi);
 
         app.Run();

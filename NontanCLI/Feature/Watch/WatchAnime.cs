@@ -131,12 +131,13 @@ namespace NontanCLI.Feature.Watch
                             {
                                 vtt_url = "";
                             }
-                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
-
+//                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
+                            M3U8Helper.setMedia(response.sources[i].url.ToString(), vtt_url!);
+                            M3U8Helper.Start();
                         }
                         else
                         {
-                            PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
+ //                           PlayOnBrowser(response.sources[i].url.ToString(), vtt_url!);
                         }
                     }
                 }
