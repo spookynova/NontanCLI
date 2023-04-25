@@ -73,7 +73,10 @@ namespace NontanCLI.Models
         public int? totalResults { get; set; }
 
         [JsonProperty("results")]
-        public List<AdvanceResultModel> results { get; set; }
+        public List<AdvanceResultModel>? results { get; set; }
+
+        [JsonProperty("message")]
+        public string? message { get; set; }
     }
 
     public class AdvanceTitle

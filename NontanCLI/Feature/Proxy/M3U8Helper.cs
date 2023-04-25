@@ -58,12 +58,15 @@ public class M3U8Helper {
         app.UseRouting();
         app.UseCors(myAllowSpecificOrigins);
         app.UseOutputCache();
-        app.MapGet("/hello", async context => { await context.Response.WriteAsync("Hello, Bitches!"); });
+        app.MapGet("/hello", async context => {
+            await context.Response.WriteAsync("Hello, Bitches!"); 
+        });
+
         app.MapGet("/player", async context =>
         {
             string CURRENT_DIR = AppDomain.CurrentDomain.BaseDirectory;
 
-            var filePath = Path.Combine(CURRENT_DIR, @"Plyr/index.html"); // Replace "example.html" with the actual file name
+            var filePath = Path.Combine(CURRENT_DIR, Constant.PlayerHtmlPath); // Player html directory
 
             if (File.Exists(filePath))
             {
@@ -77,25 +80,24 @@ public class M3U8Helper {
         });
 
 
-        app.MapGet("hls/source.m3u8", async context =>
-        {
+        app.MapGet("hls/source.m3u8", context => {
             context.Response.Redirect(Constant.baseProxyAddress + m3u8_url);
+            return Task.CompletedTask;
         });
 
-        app.MapGet("hls/subtitle",async context =>
-        {
+        app.MapGet("hls/subtitle", context => {
             context.Response.Redirect(vtt_url);
+            return Task.CompletedTask;
         });
         app.UseAuthentication();
         app.MapControllers();
 
-        ProcessStartInfo processStartInfo = new ProcessStartInfo();
-        ProcessStartInfo psi = new ProcessStartInfo
+        ProcessStartInfo player = new ProcessStartInfo
         {
             FileName = Constant.baseProxyAddress + "player",
             UseShellExecute = true
         };
-        Process.Start(psi);
+        Process.Start(player);
 
         app.Run();
 

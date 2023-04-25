@@ -51,7 +51,7 @@ namespace NontanCLI.API
                 });
 
             // check the response status code
-            if (response.StatusCode == HttpStatusCode.OK)
+            if (response!.StatusCode == HttpStatusCode.OK)
             {
                 return response;
             }

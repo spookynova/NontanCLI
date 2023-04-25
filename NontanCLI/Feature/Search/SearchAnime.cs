@@ -33,6 +33,8 @@ namespace NontanCLI.Feature.Search
                 Console.WriteLine(ex.Message);
             }
 
+
+
             Regex regex = new Regex(@"[\[\]]");
 
             table.Title = new TableTitle($"\n\nSearch Result for [green]{query}[/]");
