@@ -30,11 +30,6 @@ namespace NontanCLI
 
             if (args.Length > 0)
             {
-                if (args[0] == "-s")
-                {
-                    new SearchAnime().SearchAnimeInvoke(args[1]);
-                }
-
                 if (args[0] == "-h")
                 {
                     Console.WriteLine("-- Help --");
@@ -47,23 +42,33 @@ namespace NontanCLI
 
                 }
 
+                if (args[0] == "-s")
+                {
+                    Constant.InitConfig();
+                    new SearchAnime().SearchAnimeInvoke(args[1]);
+                }
+
                 if (args[0] == "-v")
                 {
+                    Constant.InitConfig();
                     AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})\n\n");
                 }
 
                 if (args[0] == "-t")
                 {
+                    Constant.InitConfig();
                     new TrendingAnime().TrendingAnimeInvoke();
                 }
 
                 if (args[0] == "-p")
                 {
+                    Constant.InitConfig();
                     new PopularAnime().PopularAnimeInvoke();
                 }
 
                 if (args[0] == "-w")
                 {
+                    Constant.InitConfig();
                     new WatchAnime().WatchAnimeInvoke(args[1]);
                 }
             }
