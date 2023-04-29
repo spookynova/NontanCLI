@@ -28,7 +28,11 @@
   </ItemGroup>
 
   <Target Name="PreBuild" BeforeTargets="PreBuildEvent">
-    <Exec Command="mkdir $(ProjectDir)$(OutDir)Plyr&#xD;&#xA;copy $(ProjectDir)Plyr\* $(ProjectDir)$(OutDir)Plyr\" />
-  </Target>
+  <PropertyGroup>
+    <PlyrDir>$(ProjectDir)$(OutDir)Plyr/</PlyrDir>
+  </PropertyGroup>
+  <Exec Command="mkdir -p $(PlyrDir)" />
+  <Exec Command="cp -R $(ProjectDir)Plyr/* $(PlyrDir)" />
+</Target>
 
 </Project>
