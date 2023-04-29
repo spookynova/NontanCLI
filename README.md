@@ -9,9 +9,9 @@
    alt="MIT License" /></a>
    <a href="https://img.shields.io/github/repo-size/evnx32/NontanCLI"><img
       src="https://img.shields.io/github/repo-size/evnx32/NontanCLI" alt="Repo Size" /></a>
-   <a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_shield"><img
-      src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=shield"
-      alt="FOSSA Status" /></a>
+   <a href="https://github.com/evnx32/NontanCLI/actions/workflows/dotnet.yml"><img 
+      src="https://github.com/evnx32/NontanCLI/actions/workflows/dotnet.yml/badge.svg" 
+      alt=".NET Core CI"></a>
    <a
       href="https://app.codacy.com/gh/evnx32/NontanCLI/dashboard?utm_source=gh&amp;utm_medium=referral&amp;utm_content=&amp;utm_campaign=Badge_grade"><img
       src="https://app.codacy.com/project/badge/Grade/23e02b33cf364d7190678d4958267375" alt="Codacy Badge"></a>
