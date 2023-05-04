@@ -14,6 +14,7 @@ namespace NontanCLI.Utils
         public static readonly string BaseUrl = "https://api.consumet.org/";
 
         public static string ConfigPath = "config.json";
+        public static string PlayerHtmlPath = @"Plyr/index.html";
         public static string PORT = "";
         public static string PROXY_PORT = "";
         public static string baseAddress = "";

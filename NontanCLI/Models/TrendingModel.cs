@@ -64,6 +64,9 @@ namespace NontanCLI.Models
         [JsonProperty("hasNextPage")]
         public bool? hasNextPage { get; set; }
 
+        [JsonProperty("message")]
+        public string message { get; set; }
+
         [JsonProperty("results")]
         public List<TrendingResultModel> results { get; set; }
     }

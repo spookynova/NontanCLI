@@ -57,6 +57,10 @@ namespace NontanCLI.Models
         [JsonProperty("totalResults")]
         public int? totalResults { get; set; }
 
+        [JsonProperty("message")]
+        public string message { get; set; }
+
+
         [JsonProperty("results")]
         public List<RecentResultModel> results { get; set; }
     }

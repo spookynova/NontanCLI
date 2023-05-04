@@ -16,8 +16,8 @@ namespace NontanCLI.Feature.Detail
 {
     public class DetailAnime
     {
-        private RestResponse req;
-        private InfoRoot response;
+        private RestResponse? req;
+        private InfoRoot? response;
 
         [Obsolete]
         public void GetDetailParams(string id)
@@ -26,7 +26,7 @@ namespace NontanCLI.Feature.Detail
             try
             { 
                 req = RestSharpHelper.GetResponse($"/meta/anilist/info/{id}?provider={Constant.provider}");
-                response = JsonConvert.DeserializeObject<InfoRoot>(req.Content);
+                response = JsonConvert.DeserializeObject<InfoRoot>(req.Content!);
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
@@ -59,7 +59,7 @@ namespace NontanCLI.Feature.Detail
             {
                 AnsiConsole.MarkupLine("[red]Fetching data failed, please try again later[/]");
                 // wait for 2 seconds
-                Thread.Sleep(2000);
+                Thread.Sleep(5000);
                 // clear the screen
                 AnsiConsole.Clear();
                 Program.MenuHandlerInvoke();

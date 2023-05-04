@@ -196,6 +196,17 @@ namespace NontanCLI.Feature.Trending
                     AnsiConsole.Clear();
                     Program.MenuHandlerInvoke();
                 }
+            } else
+            {
+
+                AnsiConsole.MarkupLine("[red]Something wrong, i can feet it [/]");
+                AnsiConsole.MarkupLine($"[red]Message : {response.message} [/]");
+                Thread.Sleep(5000);
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+
+
             }
         }
     }

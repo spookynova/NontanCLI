@@ -65,6 +65,10 @@ namespace NontanCLI.Models
 
         [JsonProperty("results")]
         public List<PopularResultModel> results { get; set; }
+
+        [JsonProperty("message")]
+        public string message { get; set; }
+
     }
 
     public class PopularTitle
