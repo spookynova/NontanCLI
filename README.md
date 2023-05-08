@@ -32,14 +32,7 @@
    <li>Linux ( Tested on Arch Linux )</li>
 </ul>
 <p>Please note that Internet access is required to use NontanCLI.</p>
-<h2 id="requirements-for-ready-to-use-build">Requirements for Ready-to-use build</h2>
-<p>To use NontanCLI, you will need the following:</p>
-<ul>
-   <li>.NET Core 7</li>
-   <li>.NET Runtime Desktop</li>
-   <li>Internet access</li>
-</ul>
-<p>For more information on how to use NontanCLI, including installation instructions and usage examples, please refer to the <a href="https://github.com/evnx32/NontanCLI/wiki">wiki</a>.</p>
+
 
 <h3 id="other-third-party-repositories-and-libraries-used-in-this-project">Other Third-party repositories and libraries used in this project</h3>
 <ul>
@@ -51,6 +44,10 @@
    <li><a href="https://www.newtonsoft.com/json"><strong>Spectre.Console</strong></a> by spectreconsole</li>
    <li><a href="https://stackexchange.github.io/StackExchange.Redis/"><strong>StackExchange.Redis</strong></a> by StackExchange</li>
 </ul>
+
+
+<p>For more information on how to use NontanCLI, including installation instructions and usage examples, please refer to the <a href="https://github.com/evnx32/NontanCLI/wiki">wiki</a>.</p>
+
 <h2 id="license">License</h2>
 <pre><code>MIT License
 
