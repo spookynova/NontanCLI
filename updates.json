@@ -1,6 +1,20 @@
 {
   "whats_new": [
     {
+      "version": "1.0.4 beta.08.5.23",
+      "date": "2023-05-08",
+      "build_version": "5",
+      "vlc_download_url": "https://github.com/evnx32/NontanCLI/releases/download/v.3.0.11-Vetinari/vlc-portable.zip",
+      "download_url": "https://github.com/evnx32/NontanCLI/releases/tag/v.1.0.4-beta.08.05.23",
+      "changes": [
+        "Update code",
+        "Middleware on localhost while watching video",
+        "Add Recent and Airing Schedule menu",
+        "Fix minor bug",
+        "It is recommended that you update the NontanCLI"
+      ]
+    },
+    {
       "version": "1.0.3 beta.23.4.23",
       "date": "2023-04-23",
       "build_version": "4",
@@ -12,9 +26,9 @@
         "Add subtitle for Zoro provider.",
         "Fixed minor bugs.",
         "Fix Build Version.",
-        "Remove unused packages.",
+        "Remove unused packages."
       ]
-    },    
+    },
     {
       "version": "1.0.3 beta.12.4.23",
       "date": "2023-04-12",
