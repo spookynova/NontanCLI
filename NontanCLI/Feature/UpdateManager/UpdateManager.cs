@@ -45,7 +45,6 @@ namespace NontanCLI.Feature.UpdateManager
                         }
                     }
                 }
-
             }
             catch (Exception e)
             {

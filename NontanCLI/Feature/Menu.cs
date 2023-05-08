@@ -31,7 +31,6 @@ namespace NontanCLI.Feature
             
             AnsiConsole.MarkupLine($"[bold white]Version :[/] [bold green]{Program.version}[/]" + $" ({Program.buildVersion})");
 
-
             AnsiConsole.MarkupLine($"[bold white]Server :[/] [bold green]{Constant.provider}[/]\n\n");
 
 
@@ -41,7 +40,7 @@ namespace NontanCLI.Feature
                 .PageSize(10)
                 .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
                 .AddChoices(new[] {
-                    "Popular Anime","Trending Anime", "Recent Anime", "Search Anime","Exit"
+                    "Popular Anime","Trending Anime", "Recent Anime", "Search Anime" , "Airing Schedule","Exit"
                 }));
 
             return _prompt;

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.HttpOverrides;
 using System.Diagnostics;
 using NontanCLI.Utils;
 using System.Net;
+using NontanCLI;
 
 public class M3U8Helper {
 
@@ -16,6 +17,7 @@ public class M3U8Helper {
         vtt_url = vtt;
     }
 
+    [Obsolete]
     public static void Start()
     {
         var builder = WebApplication.CreateBuilder();
@@ -54,13 +56,27 @@ public class M3U8Helper {
         });
 
         var app = builder.Build();
+        app.Use(async (context, next) =>
+        {
+            var connection = context.Connection;
+            if (connection.RemoteIpAddress != null &&
+                (connection.RemoteIpAddress.Equals(IPAddress.Loopback) ||
+                 connection.RemoteIpAddress.Equals(IPAddress.IPv6Loopback)))
+            {
+                await next();
+            }
+            else
+            {
+                context.Response.StatusCode = 403;
+                await context.Response.WriteAsync("Man, what are you doing here?, i just want to play csgo with 800 ping.");
+            }
+        });
 
         app.UseRouting();
         app.UseCors(myAllowSpecificOrigins);
         app.UseOutputCache();
-        app.MapGet("/hello", async context => {
-            await context.Response.WriteAsync("Hello, Bitches!"); 
-        });
+        app.UseAuthentication();
+        app.MapControllers();
 
         app.MapGet("/player", async context =>
         {
@@ -89,8 +105,7 @@ public class M3U8Helper {
             context.Response.Redirect(vtt_url);
             return Task.CompletedTask;
         });
-        app.UseAuthentication();
-        app.MapControllers();
+
 
         ProcessStartInfo player = new ProcessStartInfo
         {
@@ -98,6 +113,17 @@ public class M3U8Helper {
             UseShellExecute = true
         };
         Process.Start(player);
+
+        Console.CancelKeyPress += (sender, e) =>
+        {
+            e.Cancel = true;
+            app.StopAsync();
+            Thread.Sleep(3000);
+            Console.Clear();
+            Thread thread = new Thread(new ThreadStart(Program.MenuHandlerInvoke));
+            thread.Start();
+   
+        };
 
         app.Run();
 

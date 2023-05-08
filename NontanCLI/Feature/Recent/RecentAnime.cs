@@ -23,7 +23,9 @@ namespace NontanCLI.Feature.Recent
         [Obsolete]
         public void RecentAnimeInvoke()
         {
-            Table table = new Table();
+            Table _table = new Table();
+            _table.Border = TableBorder.Ascii2;
+
             Regex regex = new Regex(@"[\[\]]");
 
 
@@ -42,66 +44,66 @@ namespace NontanCLI.Feature.Recent
             if (response != null)
             {
 
-                table.Title = new TableTitle($"\n\n[green]Recent Anime Page {response.currentPage} / {response.totalPages} Result : {response.totalResults}[/]");
-                table.AddColumn("[green]ID[/]");
-                table.AddColumn("[green]Title[/]");
-                table.AddColumn("[green]Episode[/]");
-                table.AddColumn("[green]Episode Title[/]");
-                table.AddColumn("[green]Type[/]");
-                table.AddColumn("[green]Rating[/]");
+                _table.Title = new TableTitle($"\n\n[green]Recent Anime Page {response.currentPage} / {response.totalPages} Result : {response.totalResults}[/]");
+                _table.AddColumn("[green]ID[/]");
+                _table.AddColumn("[green]Title[/]");
+                _table.AddColumn("[green]Episode[/]");
+                _table.AddColumn("[green]Episode Title[/]");
+                _table.AddColumn("[green]Type[/]");
+                _table.AddColumn("[green]Rating[/]");
                 List<string> list_name = new List<string>();
                 List<RecentResultModel> recent_list = new List<RecentResultModel>();
                 foreach (var item in response.results)
                 {
                     recent_list.Add(item);
 
-                    string id = "";
-                    string title = "";
-                    string type = "";
-                    string rating = "";
-                    string episodeNumber = "";
-                    string episodeTitle = "";
+                    string _id = "";
+                    string _title = "";
+                    string _type = "";
+                    string _rating = "";
+                    string _episodeNumber = "";
+                    string _episodeTitle = "";
                     if (item.id != null)
                     {
-                        id = item.id.ToString();
+                        _id = item.id.ToString();
                     }
                     if (item.title.romaji != null)
                     {
 
-                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        _title = regex.Replace(item.title.romaji.ToString(), string.Empty);
                         list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        _title = regex.Replace(item.title.english.ToString(), string.Empty);
                         list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                     }
                     if (item.episodeNumber != null)
                     {
-                        episodeNumber = item.episodeNumber.ToString();
+                        _episodeNumber = item.episodeNumber.ToString();
                     }
 
                     if (item.episodeTitle != null)
                     {
-                        episodeTitle = item.episodeTitle.ToString();
+                        _episodeTitle = item.episodeTitle.ToString();
                     }
                     if (item.type != null)
                     {
-                        type = item.type.ToString();
+                        _type = item.type.ToString();
                     }
                     if (item.rating != null)
                     {
-                        rating = item.rating.ToString();
+                        _rating = item.rating.ToString();
                     }
 
 
-                    table.AddRow(id, title,  episodeNumber ,episodeTitle, type, rating);
+                    _table.AddRow(_id, _title,  _episodeNumber ,_episodeTitle, _type, _rating);
 
                 }
 
-                AnsiConsole.Render(table);
+                AnsiConsole.Render(_table);
 
             MenuPrompt:
 

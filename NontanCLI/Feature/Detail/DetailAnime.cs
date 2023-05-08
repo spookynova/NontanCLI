@@ -27,12 +27,20 @@ namespace NontanCLI.Feature.Detail
             { 
                 req = RestSharpHelper.GetResponse($"/meta/anilist/info/{id}?provider={Constant.provider}");
                 response = JsonConvert.DeserializeObject<InfoRoot>(req.Content!);
+
+
+                // print json
+
+//                Console.WriteLine(JsonConvert.SerializeObject(response, Formatting.Indented));
+
+
             } catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
             }
 
-            Table table = new Table();
+            Table _table = new Table();
+            _table.Border = TableBorder.Ascii2;
 
             AnsiConsole.MarkupLine("[bold green]Title[/]");
             if (response != null)
@@ -70,7 +78,14 @@ namespace NontanCLI.Feature.Detail
 
 
             AnsiConsole.MarkupLine("[bold green]Description[/]");
-            Console.WriteLine(Regex.Replace(response.description.ToString(), "<.*?>", string.Empty) + "\n");
+            if (response.description != null)
+            {
+                Console.WriteLine(Regex.Replace(response.description.ToString(), "<.*?>", string.Empty) + "\n");
+
+            } else
+            {
+                Console.WriteLine("There is no description" + "\n");
+            }
 
             AnsiConsole.MarkupLine("[bold green]Type[/]");
             Console.WriteLine(response.type.ToString() + "\n");
@@ -94,53 +109,56 @@ namespace NontanCLI.Feature.Detail
             Console.WriteLine(response.studios[0].ToString() + "\n");
 
 
-            table.Title = new TableTitle($"\n\n[green]Episode List[/]");
-            table.AddColumn("[green]No[/]");
-            table.AddColumn("[green]Title[/]");
-            table.AddColumn("[green]Description[/]");
-            table.AddColumn("[green]Episode ID[/]");
+            if (response.episodes.Count == 0)
+            {
+                AnsiConsole.MarkupLine($"[red]There is no episode available on {Constant.provider} provider, press ENTER to continue..[/]");
+                Console.ReadLine();
+                AnsiConsole.Clear();
+                Program.MenuHandlerInvoke();
+                return;
+            }
+
+
+            _table.Title = new TableTitle($"\n\n[green]Episode List[/]");
+            _table.AddColumn("[green]No[/]");
+            _table.AddColumn("[green]Title[/]");
+            _table.AddColumn("[green]Description[/]");
+            _table.AddColumn("[green]Episode ID[/]");
+
+
 
             // Add some rows
             foreach (var item in response.episodes)
             {
-                string no = "";
-                string title = "";
-                string description = "";
-                string eps_id = "";
+                string _no = "";
+                string _title = "";
+                string _description = "";
+                string _eps_id = "";
                 if (item.id != null)
                 {
-                    no = item.number.ToString();
+                    _no = item.number.ToString();
                 }
                 if (item.title != null)
                 {
-                    title = item.title.ToString();
+                    _title = item.title.ToString();
                 }
                 if (item.description != null)
                 {
-                    description = Regex.Replace(item.description.ToString(), "<.*?>", string.Empty);
+                    _description = Regex.Replace(item.description.ToString(), "<.*?>", string.Empty);
                 
                 }
 
                 if (item.id != null)
                 {
-                    eps_id = item.id.ToString();
+                    _eps_id = item.id.ToString();
                 }
 
 
-                table.AddRow("Episode " + no, title, description  + "\n", eps_id);
+                _table.AddRow("Episode " + _no, _title, _description + "\n", _eps_id);
             }
 
-            AnsiConsole.Render(table);
+            AnsiConsole.Render(_table);
 
-            if (response.episodes.Count == 0)
-            {
-                AnsiConsole.MarkupLine("[red]No episode available[/]");
-
-                Thread.Sleep(2000);
-                AnsiConsole.Clear();
-                Program.MenuHandlerInvoke();
-                return;
-            }
 
             var eps = AnsiConsole.Prompt(
                 new TextPrompt<int>("What [green]Episode (int)[/] do you want to watch : ")

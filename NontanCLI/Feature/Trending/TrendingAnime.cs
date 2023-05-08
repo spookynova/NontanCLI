@@ -22,7 +22,8 @@ namespace NontanCLI.Feature.Trending
         [Obsolete]
         public void TrendingAnimeInvoke()
         {
-            Table table = new Table();
+            Table _table = new Table();
+            _table.Border = TableBorder.Ascii2;
 
 
             try
@@ -40,71 +41,71 @@ namespace NontanCLI.Feature.Trending
             if (response != null)
             {
 
-                table.Title = new TableTitle($"\n\n[green]Trending Anime Page {response.currentPage}[/]");
-                table.AddColumn("[green]ID[/]");
-                table.AddColumn("[green]Title[/]");
-                table.AddColumn("[green]Status[/]");
-                table.AddColumn("[green]Type[/]");
-                table.AddColumn("[green]Rating[/]");
+                _table.Title = new TableTitle($"\n\n[green]Trending Anime Page {response.currentPage}[/]");
+                _table.AddColumn("[green]ID[/]");
+                _table.AddColumn("[green]Title[/]");
+                _table.AddColumn("[green]Status[/]");
+                _table.AddColumn("[green]Type[/]");
+                _table.AddColumn("[green]Rating[/]");
 
                 Regex regex = new Regex(@"[\[\]]");
 
 
-                List<string> list_name = new List<string>();
-                List<TrendingResultModel> popular_list = new List<TrendingResultModel>();
+                List<string> _list_name = new List<string>();
+                List<TrendingResultModel> _trending_list = new List<TrendingResultModel>();
                 foreach (var item in response.results)
                 {
-                    popular_list.Add(item);
+                    _trending_list.Add(item);
 
-                    string id = "";
-                    string title = "";
-                    string status = "";
-                    string type = "";
-                    string rating = "";
+                    string _id = "";
+                    string _title = "";
+                    string _status = "";
+                    string _type = "";
+                    string _rating = "";
                     if (item.id != null)
                     {
-                        id = item.id.ToString();
+                        _id = item.id.ToString();
                     }
                     if (item.title.romaji != null)
                     {
-                        
-                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
-                        list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
+
+                        _title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        _list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = regex.Replace(item.title.english.ToString(), string.Empty);
-                        list_name.Add(regex.Replace(item.title.english.ToString(),  string.Empty));
+                        _title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        _list_name.Add(regex.Replace(item.title.english.ToString(),  string.Empty));
 
                     }
                     if (item.status != null)
                     {
-                        status = item.status.ToString();
+                        _status = item.status.ToString();
                     }
                     if (item.type != null)
                     {
-                        type = item.type.ToString();
+                        _type = item.type.ToString();
                     }
                     if (item.rating != null)
                     {
-                        rating = item.rating.ToString();
+                        _rating = item.rating.ToString();
                     }
 
 
-                    if (status == "Completed")
+                    if (_status == "Completed")
                     {
-                        table.AddRow(id, title, "[green]" + status + "[/]", type, rating);
+                        _table.AddRow(_id, _title, "[green]" + _status + "[/]", _type, _rating);
 
                     }
-                    else if (status == "Ongoing")
+                    else if (_status == "Ongoing")
                     {
-                        table.AddRow(id, title, "[yellow]" + status + "[/]", type, rating);
+                        _table.AddRow(_id, _title, "[yellow]" + _status + "[/]", _type, _rating);
 
                     }
                 }
 
-                AnsiConsole.Render(table);
+                AnsiConsole.Render(_table);
 
             MenuPrompt:
 
@@ -138,13 +139,13 @@ namespace NontanCLI.Feature.Trending
 
                 if (_prompt == "Select Anime")
                 {
-                    list_name.Add("Back");
+                    _list_name.Add("Back");
                     var _selected_anime = AnsiConsole.Prompt(
                         new SelectionPrompt<string>()
                             .Title("[green]Select Anime Available[/]?")
                             .PageSize(10)
                             .MoreChoicesText("[grey](Move up and down to reveal more menu)[/]")
-                            .AddChoices(list_name.ToArray()));
+                            .AddChoices(_list_name.ToArray()));
 
                     if (_selected_anime == "Back")
                     {
@@ -152,7 +153,7 @@ namespace NontanCLI.Feature.Trending
                     }
                     Console.WriteLine(_selected_anime);
 
-                    foreach (var i in popular_list)
+                    foreach (var i in _trending_list)
                     {
                         if (i.title.romaji != null)
                         {
