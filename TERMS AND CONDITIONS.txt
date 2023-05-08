@@ -6,11 +6,9 @@ Please read these terms and conditions carefully before installing or using the 
 
 2.This application does not collect any data from the user.
 
-3.You are not allowed to sell the application or any part of it. The application is free for personal and commercial use.
+3.The application is provided "as is" without warranty of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The author or publisher of the application shall not be liable for any damages arising from the use of the application.
 
-4.The application is provided "as is" without warranty of any kind, either express or implied, including, but not limited to, the implied warranties of merchantability and fitness for a particular purpose. The author or publisher of the application shall not be liable for any damages arising from the use of the application.
-
-5.The author or publisher of the application reserves the right to change or modify these terms and conditions at any time without prior notice.
+4.The author or publisher of the application reserves the right to change or modify these terms and conditions at any time without prior notice.
 
 By installing or using the application, you agree to these terms and conditions. If you do not agree to these terms and conditions, do not install or use the application.
 
