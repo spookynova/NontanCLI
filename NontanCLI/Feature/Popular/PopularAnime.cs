@@ -24,7 +24,8 @@ namespace NontanCLI.Feature.Popular
         [Obsolete]
         public void PopularAnimeInvoke()
         {
-            Table table = new Table();
+            Table _table = new Table();
+            _table.Border = TableBorder.Ascii2;
 
             Regex regex = new Regex(@"[\[\]]");
 
@@ -42,67 +43,67 @@ namespace NontanCLI.Feature.Popular
             if (response != null)
             {
 
-                table.Title = new TableTitle($"\n\n[green]Popular Anime Page {response.currentPage}[/]");
-                table.AddColumn("[green]ID[/]");
-                table.AddColumn("[green]Title[/]");
-                table.AddColumn("[green]Status[/]");
-                table.AddColumn("[green]Type[/]");
-                table.AddColumn("[green]Rating[/]");
+                _table.Title = new TableTitle($"\n\n[green]Popular Anime Page {response.currentPage}[/]");
+                _table.AddColumn("[green]ID[/]");
+                _table.AddColumn("[green]Title[/]");
+                _table.AddColumn("[green]Status[/]");
+                _table.AddColumn("[green]Type[/]");
+                _table.AddColumn("[green]Rating[/]");
                 List<string> list_name = new List<string>();
                 List<PopularResultModel> popular_list = new List<PopularResultModel>();
                 foreach (var item in response.results)
                 {
                     popular_list.Add(item);
 
-                    string id = "";
-                    string title = "";
-                    string status = "";
-                    string type = "";
-                    string rating = "";
+                    string _id = "";
+                    string _title = "";
+                    string _status = "";
+                    string _type = "";
+                    string _rating = "";
                     if (item.id != null)
                     {
-                        id = item.id.ToString();
+                        _id = item.id.ToString();
                     }
                     if (item.title.romaji != null)
                     {
 
-                        title = regex.Replace(item.title.romaji.ToString(), string.Empty);
+                        _title = regex.Replace(item.title.romaji.ToString(), string.Empty);
                         list_name.Add(regex.Replace(item.title.romaji.ToString(), string.Empty));
 
                     }
                     else if (item.title.english != null)
                     {
-                        title = regex.Replace(item.title.english.ToString(), string.Empty);
+                        _title = regex.Replace(item.title.english.ToString(), string.Empty);
                         list_name.Add(regex.Replace(item.title.english.ToString(), string.Empty));
 
                     }
                     if (item.status != null)
                     {
-                        status = item.status.ToString();
+                        _status = item.status.ToString();
                     }
                     if (item.type != null)
                     {
-                        type = item.type.ToString();
+                        _type = item.type.ToString();
                     }
                     if (item.rating != null)
                     {
-                        rating = item.rating.ToString();
+                        _rating = item.rating.ToString();
                     }
 
 
-                    if (status == "Completed")
+                    if (_status == "Completed")
                     {
-                        table.AddRow(id, title, "[green]" + status + "[/]", type, rating);
+                        _table.AddRow(_id, _title, "[green]" + _status + "[/]", _type, _rating);
 
                     }
-                    else if (status == "Ongoing")
+                    else if (_status == "Ongoing")
                     {
-                        table.AddRow(id, title, "[yellow]" + status + "[/]", type, rating);
+                        _table.AddRow(_id, _title, "[yellow]" + _status + "[/]", _type, _rating);
 
                     }
                 }
 
-                AnsiConsole.Render(table);
+                AnsiConsole.Render(_table);
 
                 MenuPrompt:
 

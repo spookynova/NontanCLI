@@ -10,9 +10,6 @@ namespace NontanCLI.Models
     public class ConfigModel
     {
 
-        [JsonProperty("port")]
-        public string port { get; set; }
-
         [JsonProperty("proxy_port")]
         public string proxy_port { get; set; }
 
