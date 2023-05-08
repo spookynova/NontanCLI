@@ -19,7 +19,9 @@
       src="https://img.shields.io/github/v/release/evnx32/NontanCLI" alt="Release" /></a>
    <img alt="GitHub all releases" src="https://img.shields.io/github/downloads/evnx32/NontanCLI/total?color=fffffff">
 </p>
+
 <h1 id="nontancli">NontanCLI</h1>
+
 <p>NontanCLI is a lightweight command-line interface (CLI) tool for streaming anime from <a href="https://github.com/consumet/api.consumet.org">Consumet API</a>. With NontanCLI, you can search, browse, and watch anime directly from your terminal or command prompt.</p>
 <p>NontanCLI features include streaming mode, no ads, and a simple and intuitive command-line interface. It is designed to be easy to use and to provide a seamless anime watching experience.</p>
 <h2 id="supported-platforms">Supported Platforms</h2>
