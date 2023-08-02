@@ -49,27 +49,21 @@
 <p>For more information on how to use NontanCLI, including installation instructions and usage examples, please refer to the <a href="https://github.com/evnx32/NontanCLI/wiki">wiki</a>.</p>
 
 <h2 id="license">License</h2>
-<pre><code>MIT License
+<pre><code>Apache License
 
-Copyright (c) 2023 evnxwashere
+Copyright (C) 2022 Amit Shekhar
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the &quot;Software&quot;), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+       http://www.apache.org/licenses/LICENSE-2.0
 
-THE SOFTWARE IS PROVIDED &quot;AS IS&quot;, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</code></pre>
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.</code></pre>
 <p><a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_large"><img
    src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=large"
    alt="FOSSA Status" /></a></p>
