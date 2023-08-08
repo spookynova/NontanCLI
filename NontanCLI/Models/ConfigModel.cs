@@ -15,5 +15,8 @@ namespace NontanCLI.Models
 
         [JsonProperty("provider")]
         public string provider { get; set; }
+
+        [JsonProperty("consumet_url")]
+        public string consumet_url { get; set; }
     }
 }

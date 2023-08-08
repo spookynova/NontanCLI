@@ -125,6 +125,7 @@ namespace NontanCLI.Feature.Airing_Schedule
 
                 if (_selected_anime == "Back")
                 {
+                    Console.Clear();
                     Program.MenuHandlerInvoke();
                 } else
                 {

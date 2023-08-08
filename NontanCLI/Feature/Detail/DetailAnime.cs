@@ -161,12 +161,12 @@ namespace NontanCLI.Feature.Detail
 
 
             var eps = AnsiConsole.Prompt(
-                new TextPrompt<int>("What [green]Episode (int)[/] do you want to watch : ")
+                new TextPrompt<int>("What [green]Episode (int)[/] do you want to watch ( 0 for return to menu previous ): ")
                     .PromptStyle("green")
                     .ValidationErrorMessage("[red]That's not a valid episode[/]")
                     .Validate(_eps =>
                     {
-                        if (_eps > 0 && _eps <= response.episodes.Count)
+                        if (_eps >= 1 && _eps <= response.episodes.Count)
                         {
                             return ValidationResult.Success();
                         }
@@ -177,6 +177,10 @@ namespace NontanCLI.Feature.Detail
 
                     }));
 
+            if (eps == 0)
+            {
+                // back to previous menu
+            }
 
             string episode_id = "";
             foreach (var item in response.episodes)
