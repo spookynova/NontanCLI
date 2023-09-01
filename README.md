@@ -5,8 +5,8 @@
    <img src="https://raw.githubusercontent.com/evnx32/NontanCLI/main/Image/Screenshot_8.png" alt="App Screenshot" />
 </figure>
 
-<p align="center"><a href="https://choosealicense.com/licenses/mit/"><img src="https://img.shields.io/bower/l/Mi"
-   alt="MIT License" /></a>
+<p align="center"><a href="https://choosealicense.com/licenses/mit/"><img alt="GitHub" src="https://img.shields.io/github/license/evnx32/NontanCLI?style=flat">
+</a>
    <a href="https://img.shields.io/github/repo-size/evnx32/NontanCLI"><img
       src="https://img.shields.io/github/repo-size/evnx32/NontanCLI" alt="Repo Size" /></a>
    <a href="https://github.com/evnx32/NontanCLI/actions/workflows/dotnet.yml"><img 
@@ -64,6 +64,3 @@ Copyright (C) 2023 ExceptionEvader
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.</code></pre>
-<p><a href="https://app.fossa.com/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI?ref=badge_large"><img
-   src="https://app.fossa.com/api/projects/git%2Bgithub.com%2Fevnx32%2FNontanCLI.svg?type=large"
-   alt="FOSSA Status" /></a></p>
